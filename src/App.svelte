@@ -1,5 +1,7 @@
 <script>
   import { Alert, Button, FormGroup, Input, Label } from "sveltestrap";
+  import { Pleno, Docena, Apuesta } from "apuesta";
+  import { Resultado } from "resultado";
   export let name;
 
   let visible = false;
