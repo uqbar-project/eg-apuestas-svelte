@@ -1,7 +1,4 @@
 export class Resultado {
-  numeroGanador;
-  montoAGanar;
-
   constructor(numeroGanador, montoAGanar) {
     this.numeroGanador = numeroGanador;
     this.montoAGanar = montoAGanar;

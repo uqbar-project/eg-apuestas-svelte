@@ -1,7 +1,13 @@
 export class Pleno {
-  ganancia = 35;
-  descripcion = "Pleno";
-  valoresAApostar = Array.from(new Array(36), (value, index) => index + 1);
+  constructor() {
+    this.ganancia = 35;
+    this.descripcion = "Pleno";
+    this.valoresAApostar = Array.from(
+      new Array(36),
+      (value, index) => index + 1
+    );
+    // this.valoresAApostar = [...Array(37).keys()];
+  }
 
   validar(apuesta) {
     if (apuesta.monto < 10) {
@@ -15,9 +21,11 @@ export class Pleno {
 }
 
 export class Docena {
-  ganancia = 11;
-  descripcion = "Docena";
-  valoresAApostar = ["Primera", "Segunda", "Tercera"];
+  constructor() {
+    this.ganancia = 11;
+    this.descripcion = "Docena";
+    this.valoresAApostar = ["Primera", "Segunda", "Tercera"];
+  }
 
   validar(apuesta) {
     if (apuesta.monto < 50) {
@@ -34,44 +42,46 @@ export class Docena {
 }
 
 export class Apuesta {
-    static PLENO = new Pleno()
-    static DOCENA = new Docena()
+  constructor() {
+    this.fecha = new Date();
+    this.monto = 0;
+    this.tipoApuesta = PLENO;
+    this.valorApostado;
+    this.resultado;
+  }
 
-    fecha = new Date()
-    monto = 0
-    tipoApuesta = Apuesta.PLENO
-    valorApostado
-    resultado
-
-	validarApuesta() {
-        const now = new Date()
-        now.setHours(0, 0, 0, 0)
-        if (!this.fecha) {
-            throw "Debe ingresar una fecha de apuesta"
-        }
-        if (now.getTime() > this.fecha.getTime()) {
-            throw "Debe ingresar una fecha actual o posterior al día de hoy"
-        }
-        if (this.monto <= 0) {
-            throw "El monto a apostar debe ser positivo"
-        }
-        if (!this.tipoApuesta) {
-            throw "Debe ingresar tipo de apuesta"
-		}
-		if (!this.valorApostado) {
-            throw "Debe ingresar valor a apostar"
-        }
-        this.tipoApuesta.validar(this)
+  validarApuesta() {
+    const now = new Date();
+    now.setHours(0, 0, 0, 0);
+    if (!this.fecha) {
+      throw "Debe ingresar una fecha de apuesta";
     }
+    if (now.getTime() > this.fecha.getTime()) {
+      throw "Debe ingresar una fecha actual o posterior al día de hoy";
+    }
+    if (this.monto <= 0) {
+      throw "El monto a apostar debe ser positivo";
+    }
+    if (!this.tipoApuesta) {
+      throw "Debe ingresar tipo de apuesta";
+    }
+    if (!this.valorApostado) {
+      throw "Debe ingresar valor a apostar";
+    }
+    this.tipoApuesta.validar(this);
+  }
 
-    apostar() {
-		this.resultado = null
-        this.validarApuesta()
-		const numeroGanador = Math.floor(Math.random() * 37)
-		let ganancia = 0
-		if (this.tipoApuesta.esGanador(numeroGanador, this.valorApostado)) {
-			ganancia = this.monto * this.tipoApuesta.ganancia
-		}
-		this.resultado = new Resultado(numeroGanador, ganancia)
-	}
+  apostar() {
+    this.resultado = null;
+    this.validarApuesta();
+    const numeroGanador = Math.floor(Math.random() * 37);
+    let ganancia = 0;
+    if (this.tipoApuesta.esGanador(numeroGanador, this.valorApostado)) {
+      ganancia = this.monto * this.tipoApuesta.ganancia;
+    }
+    this.resultado = new Resultado(numeroGanador, ganancia);
+  }
 }
+
+export const PLENO = new Pleno();
+export const DOCENA = new Docena();
