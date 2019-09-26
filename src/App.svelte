@@ -159,4 +159,17 @@
       </button>
     </div>
   </div>
+  {#if apuesta.resultado}
+    <div class="resultado">
+      <div>
+        <Alert
+          class="resultado"
+          color={apuesta.resultado.gano() ? 'success' : 'warning'}
+          isOpen={apuesta.resultado}
+          toggle={() => (apuesta.resultado = null)}>
+          {apuesta.resultado.valor()}
+        </Alert>
+      </div>
+    </div>
+  {/if}
 </div>
