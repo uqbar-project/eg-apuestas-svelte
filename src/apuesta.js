@@ -1,3 +1,5 @@
+import Resultado from "./resultado";
+
 export class Pleno {
   constructor() {
     this.ganancia = 35;
@@ -29,7 +31,7 @@ export class Docena {
 
   validar(apuesta) {
     if (apuesta.monto < 50) {
-      throw "Debe apostar más de 50 $";
+      throw "Debe apostar más de $50";
     }
   }
 
