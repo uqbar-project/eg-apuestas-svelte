@@ -60,48 +60,103 @@
   .centrado {
     text-align: center;
   }
+  .gris {
+    color: #9e9e9e;
+    font-weight: bold;
+  }
+  .boton {
+    margin-top: 2rem;
+    padding:1rem;
+  }
+
+  .titulo {
+    margin-top: 3rem;
+  }
+
+  .apuesta-form {
+    margin:2rem;
+    padding:3rem;
+    background-color:#e6eff7;
+  }
+
+  .error {
+    height:3rem;
+    padding-left:1rem; 
+    padding-right:1rem;
+  }
 </style>
 
-<Alert color="danger" isOpen={visible} toggle={() => (visible = false)}>
-  {errorMessage}
-</Alert>
-
-<h1 class="centrado">Apuesta de Ruleta</h1>
-
-<FormGroup>
-  <Label for="exampleDate">Fecha</Label>
-  <Input
-    type="date"
-    name="date"
-    id="date"
-    placeholder="Fecha"
-    bind:value={fechaModel} />
-</FormGroup>
-<FormGroup>
-  <Label for="exampleNumber">Monto</Label>
-  <Input
-    type="number"
-    name="number"
-    id="exampleNumber"
-    bind:value={apuesta.monto} />
-</FormGroup>
-<FormGroup>
-  <Label for="exampleSelect">Tipo de Apuesta</Label>
-  <select bind:value={apuesta.tipoApuesta} name="select" id="exampleSelect">
-    {#each tiposApuesta as opcion}
-      <option value={opcion}>{opcion.descripcion}</option>
-    {/each}
-  </select>
-</FormGroup>
-<FormGroup>
-  <Label for="exampleSelect">Qué apostas?</Label>
-  <select bind:value={apuesta.valorApostado} name="select" id="exampleSelect">
-    {#each apuesta.tipoApuesta.valoresAApostar as opcion}
-      <option>{opcion}</option>
-    {/each}
-  </select>
-</FormGroup>
-
-<div class="centrado">
-  <Button on:click={apostar} {color}>Apostar</Button>
+<div>
+  <hr/>
+  <div class="error">
+    <div>
+      <Alert
+        class = "error"
+        style="margin:auto; background-color: #ff4444;color:white;"
+        isOpen={errorMessage}
+        toggle={() => (errorMessage = '')}>
+        {errorMessage}
+      </Alert>
+    </div>
+  </div>
+  <hr />
+  <p class="h4 text-center mb-4 titulo">Apuestas de Ruleta</p>
+  <div class="card apuesta-form">
+    <FormGroup>
+      <h5 class="gris" for="exampleDate">Fecha</h5>
+      <Input
+        type="date"
+        name="date"
+        id="date"
+        placeholder="Fecha"
+        bind:value={fechaModel} />
+    </FormGroup>
+    <FormGroup>
+      <div class="md-form">
+        <h5 class="gris" for="exampleNumber">Monto</h5>
+        <Input
+          class="form-control"
+          required="true"
+          type="number"
+          name="number"
+          id="exampleNumber"
+          bind:value={apuesta.monto} />
+      </div>
+    </FormGroup>
+    <FormGroup>
+      <h5 class="gris" for="exampleSelect">Tipo de Apuesta</h5>
+      <select
+        bind:value={apuesta.tipoApuesta}
+        class="form-control"
+        required="true"
+        name="select"
+        id="exampleSelect">
+        {#each tiposApuesta as opcion}
+          <option value={opcion}>{opcion.descripcion}</option>
+        {/each}
+      </select>
+    </FormGroup>
+    <FormGroup>
+      <h5 class="gris" for="exampleSelect">Qué apostás</h5>
+      <select
+        bind:value={apuesta.valorApostado}
+        name="select"
+        class="form-control"
+        required="true"
+        id="exampleSelect">
+        {#each apuesta.tipoApuesta.valoresAApostar as opcion}
+          <option>{opcion}</option>
+        {/each}
+      </select>
+    </FormGroup>
+    <div class="centrado">
+      <button
+        on:click={apostar}
+        {color}
+        type="button"
+        class="btn btn-primary boton">
+        APOSTAR
+      </button>
+    </div>
+  </div>
 </div>
