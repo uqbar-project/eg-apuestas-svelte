@@ -3,7 +3,6 @@
   import { Alert, Button, FormGroup, Input, Label } from "sveltestrap";
 
   import { Pleno, Docena, Apuesta, PLENO, DOCENA } from "./apuesta";
-  import Resultado from "./resultado";
   export let name;
 
   //DODINO
@@ -66,7 +65,7 @@
   }
   .boton {
     margin-top: 2rem;
-    padding:1rem;
+    padding: 1rem;
   }
 
   .titulo {
@@ -74,32 +73,30 @@
   }
 
   .apuesta-form {
-    margin:2rem;
-    padding:3rem;
-    background-color:#e6eff7;
+    margin: 2rem;
+    padding: 3rem;
+    background-color: #e6eff7;
   }
 
   .error {
-    height:3rem;
-    padding-left:1rem; 
-    padding-right:1rem;
+    height: 3rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
   }
 </style>
 
 <div>
-  <hr/>
   <div class="error">
     <div>
       <Alert
-        class = "error"
-        style="margin:auto; background-color: #ff4444;color:white;"
+        class="error"
+        color="danger"
         isOpen={errorMessage}
         toggle={() => (errorMessage = '')}>
         {errorMessage}
       </Alert>
     </div>
   </div>
-  <hr />
   <p class="h4 text-center mb-4 titulo">Apuestas de Ruleta</p>
   <div class="card apuesta-form">
     <FormGroup>
