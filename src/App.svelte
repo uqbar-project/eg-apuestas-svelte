@@ -8,7 +8,7 @@
   //DODINO
   let apuesta = new Apuesta();
   let opcionesFecha = {};
-  let fechaModel = {};
+  let fechaModel;
   let tiposApuesta = [PLENO, DOCENA];
   let errorMessage = "";
 
@@ -49,8 +49,6 @@
   //DODINO
 
   let visible = true;
-
-  const color = "primary";
 
   $: sarasa = console.log(apuesta);
 </script>
@@ -148,26 +146,20 @@
       </select>
     </FormGroup>
     <div class="centrado">
-      <button
-        on:click={apostar}
-        {color}
-        type="button"
-        class="btn btn-primary boton">
+      <button on:click={apostar} type="button" class="btn btn-primary boton">
         APOSTAR
       </button>
     </div>
   </div>
   {#if apuesta.resultado}
     <div class="resultado">
-      <div>
-        <Alert
-          class="resultado"
-          color={apuesta.resultado.gano() ? 'success' : 'warning'}
-          isOpen={apuesta.resultado}
-          toggle={() => (apuesta.resultado = null)}>
-          {apuesta.resultado.valor()}
-        </Alert>
-      </div>
+      <Alert
+        class="resultado"
+        color={apuesta.resultado.gano() ? 'success' : 'warning'}
+        isOpen={apuesta.resultado}
+        toggle={() => (apuesta.resultado = null)}>
+        {apuesta.resultado.valor()}
+      </Alert>
     </div>
   {/if}
 </div>
