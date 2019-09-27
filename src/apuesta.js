@@ -61,6 +61,9 @@ export class Apuesta {
     if (now.getTime() > this.fecha.getTime()) {
       throw "Debe ingresar una fecha actual o posterior al día de hoy";
     }
+    if (!this.monto) {
+      throw "Debe ingresar un monto para apostar";
+    }
     if (this.monto <= 0) {
       throw "El monto a apostar debe ser positivo";
     }
