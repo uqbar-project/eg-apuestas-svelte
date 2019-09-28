@@ -8,50 +8,22 @@
 
   //DODINO
   let apuesta = new Apuesta();
-  let opcionesFecha = {};
-  let fechaModel;
   let tiposApuesta = [PLENO, DOCENA];
   let errorMessage = "";
 
   function apostar() {
     try {
-      apuesta.fecha = convertirADate(fechaModel);
       errorMessage = "";
       apuesta.apostar();
     } catch (errorValidation) {
       errorMessage = errorValidation;
     }
   }
-  onMount(() => {
-    const ayer = new Date();
-    ayer.setDate(ayer.getDate() - 1);
-    opcionesFecha = {
-      dateFormat: "dd/mm/yyyy",
-      disableUntil: convertirANuevoDate(ayer)
-    };
-    const fechaApuesta = apuesta.fecha;
-    fechaModel = {
-      date: convertirANuevoDate(fechaApuesta)
-    };
-  });
-
-  function convertirANuevoDate(fecha) {
-    return {
-      year: fecha.getFullYear(),
-      month: fecha.getMonth() + 1,
-      day: fecha.getDate()
-    };
-  }
-
-  function convertirADate(fecha) {
-    if (!fecha) return null;
-    return new Date(fecha.year, fecha.month - 1, fecha.day);
-  }
   //DODINO
 
   let visible = true;
 
-  $: sarasa = console.log(apuesta);
+  $: fechaApuesta = console.log(apuesta.fecha);
 </script>
 
 <style>
