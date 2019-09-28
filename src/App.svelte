@@ -15,6 +15,7 @@
     try {
       errorMessage = "";
       apuesta.apostar();
+      apuesta = apuesta;
     } catch (errorValidation) {
       errorMessage = errorValidation;
     }
@@ -22,8 +23,6 @@
   //DODINO
 
   let visible = true;
-
-  $: fechaApuesta = console.log(apuesta.fecha);
 </script>
 
 <style>
