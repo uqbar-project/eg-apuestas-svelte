@@ -4,7 +4,7 @@
   import Datepicker from "svelte-calendar";
 
   import { Pleno, Docena, Apuesta, PLENO, DOCENA } from "./apuesta";
-  export let name;
+  import Error from "./Error.svelte";
 
   //DODINO
   let apuesta = new Apuesta();
@@ -47,26 +47,11 @@
     padding: 3rem;
     background-color: #e6eff7;
   }
-
-  .error {
-    height: 3rem;
-    padding-left: 1rem;
-    padding-right: 1rem;
-  }
 </style>
 
 <div>
-  <div class="error">
-    <div>
-      <Alert
-        class="error"
-        color="danger"
-        isOpen={errorMessage}
-        toggle={() => (errorMessage = '')}>
-        {errorMessage}
-      </Alert>
-    </div>
-  </div>
+  <Error bind:message={errorMessage} />
+
   <p class="h4 text-center mb-4 titulo">Apuestas de Ruleta</p>
   <div class="card apuesta-form">
     <FormGroup>
