@@ -5,6 +5,7 @@
 
   import { Pleno, Docena, Apuesta, PLENO, DOCENA } from "./apuesta";
   import Error from "./Error.svelte";
+  import Resultado from "./Resultado.svelte";
 
   //DODINO
   let apuesta = new Apuesta();
@@ -106,14 +107,6 @@
     </div>
   </div>
   {#if apuesta.resultado}
-    <div class="resultado">
-      <Alert
-        class="resultado"
-        color={apuesta.resultado.gano() ? 'success' : 'warning'}
-        isOpen={apuesta.resultado}
-        toggle={() => (apuesta.resultado = null)}>
-        {apuesta.resultado.valor()}
-      </Alert>
-    </div>
+    <Resultado bind:resultado={apuesta.resultado} />
   {/if}
 </div>
