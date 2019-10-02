@@ -1,29 +1,29 @@
 <script>
-  import { onMount } from "svelte";
-  import { Alert, Button, FormGroup, Input, Label } from "sveltestrap";
-  import Datepicker from "svelte-calendar";
+  import { onMount } from 'svelte'
+  import { Alert, Button, FormGroup, Input, Label } from 'sveltestrap'
+  import Datepicker from 'svelte-calendar'
 
-  import { Pleno, Docena, Apuesta, PLENO, DOCENA } from "./apuesta";
-  import Error from "./Error.svelte";
-  import Resultado from "./Resultado.svelte";
+  import { Pleno, Docena, Apuesta, PLENO, DOCENA } from './apuesta'
+  import Error from './Error.svelte'
+  import Resultado from './Resultado.svelte'
 
   //DODINO
-  let apuesta = new Apuesta();
-  let tiposApuesta = [PLENO, DOCENA];
-  let errorMessage = "";
+  let apuesta = new Apuesta()
+  let tiposApuesta = [PLENO, DOCENA]
+  let errorMessage = ''
 
   function apostar() {
     try {
-      errorMessage = "";
-      apuesta.apostar();
-      apuesta = apuesta;
+      errorMessage = ''
+      apuesta.apostar()
+      apuesta = apuesta
     } catch (errorValidation) {
-      errorMessage = errorValidation;
+      errorMessage = errorValidation
     }
   }
   //DODINO
 
-  let visible = true;
+  let visible = true
 </script>
 
 <style>
@@ -89,21 +89,14 @@
     </FormGroup>
     <FormGroup>
       <h5 class="gris" for="exampleSelect">Qué apostás</h5>
-      <select
-        bind:value={apuesta.valorApostado}
-        name="select"
-        class="form-control"
-        required="true"
-        id="exampleSelect">
+      <select bind:value={apuesta.valorApostado} name="select" class="form-control" required="true" id="exampleSelect">
         {#each apuesta.tipoApuesta.valoresAApostar as opcion}
           <option>{opcion}</option>
         {/each}
       </select>
     </FormGroup>
     <div class="centrado">
-      <button on:click={apostar} type="button" class="btn btn-primary boton">
-        APOSTAR
-      </button>
+      <button on:click={apostar} type="button" class="btn btn-primary boton">APOSTAR</button>
     </div>
   </div>
   {#if apuesta.resultado}

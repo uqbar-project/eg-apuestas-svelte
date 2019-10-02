@@ -1,6 +1,6 @@
 <script>
-  export let message;
-  import { Alert } from "sveltestrap";
+  export let message
+  import { Alert } from 'sveltestrap'
 </script>
 
 <style>
@@ -12,11 +12,5 @@
 </style>
 
 <div class="error">
-  <Alert
-    class="error"
-    color="danger"
-    isOpen={message}
-    toggle={() => (message = '')}>
-    {message}
-  </Alert>
+  <Alert class="error" color="danger" isOpen={message} toggle={() => (message = '')}>{message}</Alert>
 </div>
