@@ -4,11 +4,7 @@ export class Pleno {
   constructor() {
     this.ganancia = 35;
     this.descripcion = "Pleno";
-    this.valoresAApostar = Array.from(
-      new Array(36),
-      (value, index) => index + 1
-    );
-    // this.valoresAApostar = [...Array(37).keys()];
+    this.valoresAApostar = [...Array(37).keys()];
   }
 
   validar(apuesta) {
