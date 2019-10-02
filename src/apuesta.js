@@ -1,5 +1,21 @@
 import Resultado from "./resultado";
 
+const PRIMERA = {
+  toString: () => "Primera",
+  min: 1,
+  max: 12
+};
+const SEGUNDA = {
+  toString: () => "Segunda",
+  min: 13,
+  max: 24
+};
+const TERCERA = {
+  toString: () => "Tercera",
+  min: 25,
+  max: 36
+};
+
 export class Pleno {
   constructor() {
     this.ganancia = 35;
@@ -22,7 +38,7 @@ export class Docena {
   constructor() {
     this.ganancia = 11;
     this.descripcion = "Docena";
-    this.valoresAApostar = ["Primera", "Segunda", "Tercera"];
+    this.valoresAApostar = [PRIMERA, SEGUNDA, TERCERA];
   }
 
   validar(apuesta) {
@@ -32,10 +48,7 @@ export class Docena {
   }
 
   esGanador(numeroGanador, valorApostado) {
-    const docena = this.valoresAApostar.indexOf(valorApostado);
-    const min = docena * 12 + 1;
-    const max = (docena + 1) * 12;
-    return numeroGanador >= min && numeroGanador <= max;
+    return numeroGanador >= valorApostado.min && numeroGanador <= valorApostado.max
   }
 }
 
@@ -73,7 +86,6 @@ export class Apuesta {
   }
 
   apostar() {
-    this.resultado = null;
     this.validarApuesta();
     const numeroGanador = Math.floor(Math.random() * 37);
     let ganancia = 0;
@@ -86,3 +98,4 @@ export class Apuesta {
 
 export const PLENO = new Pleno();
 export const DOCENA = new Docena();
+
