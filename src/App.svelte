@@ -60,7 +60,7 @@
     <FormGroup>
       <div class="md-form">
         <h5 class="gris" for="exampleNumber">Monto</h5>
-        <Input
+        <input
           class="form-control"
           required="true"
           type="number"
