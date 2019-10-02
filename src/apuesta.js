@@ -4,11 +4,7 @@ export class Pleno {
   constructor() {
     this.ganancia = 35;
     this.descripcion = "Pleno";
-    this.valoresAApostar = Array.from(
-      new Array(36),
-      (value, index) => index + 1
-    );
-    // this.valoresAApostar = [...Array(37).keys()];
+    this.valoresAApostar = [...Array(37).keys()];
   }
 
   validar(apuesta) {
@@ -70,7 +66,7 @@ export class Apuesta {
     if (!this.tipoApuesta) {
       throw "Debe ingresar tipo de apuesta";
     }
-    if (!this.valorApostado) {
+    if (this.valorApostado === undefined) {
       throw "Debe ingresar valor a apostar";
     }
     this.tipoApuesta.validar(this);
