@@ -7,7 +7,6 @@
   import Error from './Error.svelte'
   import Resultado from './Resultado.svelte'
 
-  //DODINO
   let apuesta = new Apuesta()
   let tiposApuesta = [PLENO, DOCENA]
   let errorMessage = ''
@@ -17,13 +16,10 @@
       errorMessage = ''
       apuesta.apostar()
       apuesta = apuesta
-    } catch (errorValidation) {
-      errorMessage = errorValidation
+    } catch (validationError) {
+      errorMessage = validationError
     }
   }
-  //DODINO
-
-  let visible = true
 </script>
 
 <style>
