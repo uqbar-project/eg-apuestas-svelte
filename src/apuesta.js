@@ -42,7 +42,7 @@ export class Docena {
 export class Apuesta {
   constructor() {
     this.fecha = new Date();
-    this.monto = 0;
+    this.monto;
     this.tipoApuesta = PLENO;
     this.valorApostado;
     this.resultado;
@@ -57,7 +57,7 @@ export class Apuesta {
     if (now.getTime() > this.fecha.getTime()) {
       throw "Debe ingresar una fecha actual o posterior al día de hoy";
     }
-    if (!this.monto) {
+    if (this.monto === undefined) {
       throw "Debe ingresar un monto para apostar";
     }
     if (this.monto <= 0) {
