@@ -86,6 +86,7 @@ export class Apuesta {
   }
 
   apostar() {
+    this.resultado = null
     this.validarApuesta()
     const numeroGanador = Math.floor(Math.random() * 37)
     let ganancia = 0
