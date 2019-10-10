@@ -1,3 +1,11 @@
+# Apuestas (SvelteJS)
+
+_fork_ del ejemplo [Apuestas de una ruleta en Angular](https://github.com/uqbar-project/eg-apuestas-angular)
+
+Realizado con [Svelte](https://svelte.dev) e implementando binding bidireccional.
+
+![apuestas](https://user-images.githubusercontent.com/4999277/66611182-13b7a380-eb94-11e9-832a-2ba7ccf1569d.gif)
+
 # Empezá tu propia svelte app
 
 Este proyecto se comenzó a partir del template que provee [Svelte](https://svelte.dev)
@@ -9,8 +17,7 @@ npx degit sveltejs/template svelte-app
 cd svelte-app
 ```
 
-*Tenés que tener [Node.js](https://nodejs.org) instalado!*
-
+_Tenés que tener [Node.js](https://nodejs.org) instalado!_
 
 Instalá las dependencias...
 
