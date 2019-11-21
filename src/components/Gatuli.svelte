@@ -6,7 +6,7 @@
   img {
     position: absolute;
     left: 0;
-    /* bottom: -60px; */
+    bottom: -90px;
     transform: translate(-80%, 0) rotate(-30deg);
     transform-origin: 100% 100%;
     transition: transform 0.4s;
@@ -21,4 +21,4 @@
   }
 </style>
 
-<img class:curious={hereKitty} alt="Kitten wants to know what's going on" src="./gatuli.png" />
+<img class:curious={hereKitty} alt="Kitten wants to know what's going on" src="images/gatuli.png" />
