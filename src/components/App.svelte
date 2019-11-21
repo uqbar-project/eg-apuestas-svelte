@@ -1,28 +1,25 @@
 <script>
-  import { onMount } from "svelte";
-  import { Alert, Button, FormGroup, Input, Label } from "sveltestrap";
-  import Datepicker from "svelte-calendar";
+  import { onMount } from 'svelte'
+  import { Alert, Button, FormGroup, Input, Label } from 'sveltestrap'
+  import Datepicker from 'svelte-calendar'
 
-  import { Pleno, Docena, Apuesta, PLENO, DOCENA } from "./apuesta";
-  export let name;
+  import { Pleno, Docena, Apuesta, PLENO, DOCENA } from '../model/apuesta'
+  import Error from './Error.svelte'
+  import Resultado from './Resultado.svelte'
 
-  //DODINO
-  let apuesta = new Apuesta();
-  let tiposApuesta = [PLENO, DOCENA];
-  let errorMessage = "";
+  let apuesta = new Apuesta()
+  let tiposApuesta = [PLENO, DOCENA]
+  let errorMessage = ''
 
   function apostar() {
     try {
-      errorMessage = "";
-      apuesta.apostar();
-      apuesta = apuesta;
-    } catch (errorValidation) {
-      errorMessage = errorValidation;
+      errorMessage = ''
+      apuesta.apostar()
+      apuesta = apuesta
+    } catch (validationError) {
+      errorMessage = validationError
     }
   }
-  //DODINO
-
-  let visible = true;
 </script>
 
 <style>
@@ -47,26 +44,11 @@
     padding: 3rem;
     background-color: #e6eff7;
   }
-
-  .error {
-    height: 3rem;
-    padding-left: 1rem;
-    padding-right: 1rem;
-  }
 </style>
 
 <div>
-  <div class="error">
-    <div>
-      <Alert
-        class="error"
-        color="danger"
-        isOpen={errorMessage}
-        toggle={() => (errorMessage = '')}>
-        {errorMessage}
-      </Alert>
-    </div>
-  </div>
+  <Error bind:message={errorMessage} />
+
   <p class="h4 text-center mb-4 titulo">Apuestas de Ruleta</p>
   <div class="card apuesta-form">
     <FormGroup>
@@ -103,32 +85,17 @@
     </FormGroup>
     <FormGroup>
       <h5 class="gris" for="exampleSelect">Qué apostás</h5>
-      <select
-        bind:value={apuesta.valorApostado}
-        name="select"
-        class="form-control"
-        required="true"
-        id="exampleSelect">
+      <select bind:value={apuesta.valorApostado} name="select" class="form-control" required="true" id="exampleSelect">
         {#each apuesta.tipoApuesta.valoresAApostar as opcion}
           <option>{opcion}</option>
         {/each}
       </select>
     </FormGroup>
     <div class="centrado">
-      <button on:click={apostar} type="button" class="btn btn-primary boton">
-        APOSTAR
-      </button>
+      <button on:click={apostar} type="button" class="btn btn-primary boton">APOSTAR</button>
     </div>
   </div>
   {#if apuesta.resultado}
-    <div class="resultado">
-      <Alert
-        class="resultado"
-        color={apuesta.resultado.gano() ? 'success' : 'warning'}
-        isOpen={apuesta.resultado}
-        toggle={() => (apuesta.resultado = null)}>
-        {apuesta.resultado.valor()}
-      </Alert>
-    </div>
+    <Resultado bind:resultado={apuesta.resultado} />
   {/if}
 </div>
