@@ -3,7 +3,7 @@
   import { Alert, Button, FormGroup, Input, Label } from 'sveltestrap'
   import Datepicker from 'svelte-calendar'
 
-  import { Pleno, Docena, Apuesta, PLENO, DOCENA } from './apuesta'
+  import { Pleno, Docena, Apuesta, PLENO, DOCENA } from '../model/apuesta'
   import Error from './Error.svelte'
   import Resultado from './Resultado.svelte'
 
