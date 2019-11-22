@@ -8,11 +8,13 @@
   const handleMouseleave = () => (hereKitty = false)
 </script>
 
-<div class="resultado" on:mouseenter={handleMouseenter} on:mouseleave={handleMouseleave}>
-  <Alert color={resultado.gano() ? 'success' : 'warning'} isOpen={resultado} toggle={() => (resultado = null)}>
-    {resultado.valor()}
-  </Alert>
-  {#if resultado.gano()}
-    <Gatuli {hereKitty} />
-  {/if}
-</div>
+{#if resultado}
+  <div class="resultado" on:mouseenter={handleMouseenter} on:mouseleave={handleMouseleave}>
+    <Alert color={resultado.gano() ? 'success' : 'warning'} toggle={() => (resultado = null)}>
+      {resultado.valor()}
+    </Alert>
+    {#if resultado.gano()}
+      <Gatuli {hereKitty} />
+    {/if}
+  </div>
+{/if}
