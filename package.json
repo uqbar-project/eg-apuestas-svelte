@@ -14,7 +14,7 @@
   "dependencies": {
     "bootstrap": "^4.3.1",
     "sirv-cli": "^0.4.4",
-    "svelte-calendar": "^1.0.8",
+    "svelte-calendar": "^1.2.0",
     "sveltestrap": "^3.2.0"
   },
   "scripts": {
