@@ -8,10 +8,16 @@
   const handleMouseleave = () => (hereKitty = false)
 </script>
 
+<style>
+  .resultado {
+    text-align: center;
+  }
+</style>
+
 {#if resultado}
   <div class="resultado" on:mouseenter={handleMouseenter} on:mouseleave={handleMouseleave}>
     <Alert color={resultado.gano() ? 'success' : 'warning'} toggle={() => (resultado = null)}>
-      {resultado.valor()}
+      <strong>{resultado.valor()}</strong>
     </Alert>
     {#if resultado.gano()}
       <Gatuli {hereKitty} />

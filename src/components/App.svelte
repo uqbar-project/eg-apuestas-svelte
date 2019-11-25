@@ -26,76 +26,88 @@
   .centrado {
     text-align: center;
   }
-  .gris {
-    color: #9e9e9e;
-    font-weight: bold;
-  }
   .boton {
     margin-top: 2rem;
-    padding: 1rem;
+    font-size: 0.8rem;
+    padding: 0.8rem;
+    padding-right: 2rem;
+    padding-left: 2rem;
   }
 
-  .titulo {
-    margin-top: 3rem;
+  .error {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
   }
 
   .apuesta-form {
-    margin: 2rem;
-    padding: 3rem;
-    background-color: #e6eff7;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+    padding: 2rem;
+    /* background-color: #46b3e6 !important; */
   }
 </style>
 
-<div>
-  <Error bind:message={errorMessage} />
+<div class="container">
+  <div>
+    <div class="error">
+      <Error bind:message={errorMessage} />
+    </div>
 
-  <p class="h4 text-center mb-4 titulo">Apuestas de Ruleta</p>
-  <div class="card apuesta-form">
-    <FormGroup>
-      <Datepicker
-        format={'#{d}/#{m}/#{Y}'}
-        start={new Date()}
-        on:dateSelected={event => (apuesta.fecha = event.detail.date)} />
-    </FormGroup>
-    <FormGroup>
-      <div class="md-form">
-        <h5 class="gris" for="exampleNumber">Monto</h5>
-        <input
+    <p class="h4 text-center mb-4 titulo">Apuestas de Ruleta</p>
+    <div class="card apuesta-form">
+      <FormGroup>
+        <h5 for="date">Fecha</h5>
+        <Datepicker
+          format={'#{d}/#{m}/#{Y}'}
+          start={new Date()}
+          on:dateSelected={event => (apuesta.fecha = event.detail.date)} />
+      </FormGroup>
+      <FormGroup>
+        <div class="md-form">
+          <h5 for="montoApuesta">Monto</h5>
+          <input
+            placeholder="Monto en $"
+            class="form-control"
+            required="true"
+            type="number"
+            name="number"
+            id="montoApuesta"
+            bind:value={apuesta.monto} />
+        </div>
+      </FormGroup>
+      <FormGroup>
+        <h5 for="tipoDeApuesta">Tipo de Apuesta</h5>
+        <select
+          bind:value={apuesta.tipoApuesta}
+          on:change={() => (apuesta.valorApostado = apuesta.tipoApuesta.valoresAApostar[0])}
           class="form-control"
           required="true"
-          type="number"
-          name="number"
-          id="exampleNumber"
-          bind:value={apuesta.monto} />
+          name="select"
+          id="tipoDeApuesta">
+          {#each tiposApuesta as opcion}
+            <option value={opcion}>{opcion.descripcion}</option>
+          {/each}
+        </select>
+      </FormGroup>
+      <FormGroup>
+        <h5 for="numeroApuesta">Qué apostás</h5>
+        <select
+          bind:value={apuesta.valorApostado}
+          name="select"
+          class="form-control"
+          required="true"
+          id="numeroApuesta">
+          {#each apuesta.tipoApuesta.valoresAApostar as opcion}
+            <option>{opcion}</option>
+          {/each}
+        </select>
+      </FormGroup>
+      <div class="centrado">
+        <button on:click={apostar} type="button" class="btn btn-success boton">APOSTAR</button>
       </div>
-    </FormGroup>
-    <FormGroup>
-      <h5 class="gris" for="exampleSelect">Tipo de Apuesta</h5>
-      <select
-        bind:value={apuesta.tipoApuesta}
-        on:change={() => (apuesta.valorApostado = apuesta.tipoApuesta.valoresAApostar[0])}
-        class="form-control"
-        required="true"
-        name="select"
-        id="exampleSelect">
-        {#each tiposApuesta as opcion}
-          <option value={opcion}>{opcion.descripcion}</option>
-        {/each}
-      </select>
-    </FormGroup>
-    <FormGroup>
-      <h5 class="gris" for="exampleSelect">Qué apostás</h5>
-      <select bind:value={apuesta.valorApostado} name="select" class="form-control" required="true" id="exampleSelect">
-        {#each apuesta.tipoApuesta.valoresAApostar as opcion}
-          <option>{opcion}</option>
-        {/each}
-      </select>
-    </FormGroup>
-    <div class="centrado">
-      <button on:click={apostar} type="button" class="btn btn-primary boton">APOSTAR</button>
     </div>
+    {#if apuesta.resultado}
+      <Resultado bind:resultado={apuesta.resultado} />
+    {/if}
   </div>
-  {#if apuesta.resultado}
-    <Resultado bind:resultado={apuesta.resultado} />
-  {/if}
 </div>
