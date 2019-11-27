@@ -4,7 +4,7 @@ _fork_ del ejemplo [Apuestas de una ruleta en Angular](https://github.com/uqbar-
 
 Realizado con [Svelte](https://svelte.dev) e implementando binding bidireccional.
 
-![apuestas](https://user-images.githubusercontent.com/4999277/66611182-13b7a380-eb94-11e9-832a-2ba7ccf1569d.gif)
+![apuestas-demo](https://user-images.githubusercontent.com/26492157/69761286-afea3980-1145-11ea-8d1f-d6ee50ad0411.gif)
 
 # Empezá tu propia svelte app
 
