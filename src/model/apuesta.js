@@ -20,12 +20,17 @@ export class Pleno {
   constructor() {
     this.ganancia = 35
     this.descripcion = 'Pleno'
+    this.MINIMO_APUESTA = 10
+    this.MAXIMO_APUESTA = 50000
     this.valoresAApostar = [...Array(37).keys()]
   }
 
   validar(apuesta) {
-    if (apuesta.monto < 10) {
-      throw 'Debe apostar más de $10'
+    if (apuesta.monto < this.MINIMO_APUESTA) {
+      throw `Debe apostar más de $${this.MINIMO_APUESTA}`
+    }
+    if (apuesta.monto > this.MAXIMO_APUESTA) {
+      throw `No puede apostar más de $${this.MAXIMO_APUESTA}`
     }
   }
 
@@ -39,11 +44,16 @@ export class Docena {
     this.ganancia = 11
     this.descripcion = 'Docena'
     this.valoresAApostar = [PRIMERA, SEGUNDA, TERCERA]
+    this.MINIMO_APUESTA = 50
+    this.MAXIMO_APUESTA = 100000
   }
 
   validar(apuesta) {
-    if (apuesta.monto < 50) {
-      throw 'Debe apostar más de $50'
+    if (apuesta.monto < this.MINIMO_APUESTA) {
+      throw `Debe apostar más de $${this.MINIMO_APUESTA}`
+    }
+    if (apuesta.monto > this.MAXIMO_APUESTA) {
+      throw `No puede apostar más de $${this.MAXIMO_APUESTA}`
     }
   }
 
