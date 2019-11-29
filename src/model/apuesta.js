@@ -26,7 +26,7 @@ export class Pleno {
   }
 
   validar(apuesta) {
-    if (apuesta.monto < this.MINIMO_APUESTA) {
+    if (apuesta.monto <= this.MINIMO_APUESTA) {
       throw `Debe apostar más de $${this.MINIMO_APUESTA}`
     }
     if (apuesta.monto > this.MAXIMO_APUESTA) {
@@ -49,7 +49,7 @@ export class Docena {
   }
 
   validar(apuesta) {
-    if (apuesta.monto < this.MINIMO_APUESTA) {
+    if (apuesta.monto <= this.MINIMO_APUESTA) {
       throw `Debe apostar más de $${this.MINIMO_APUESTA}`
     }
     if (apuesta.monto > this.MAXIMO_APUESTA) {
