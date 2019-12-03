@@ -33,7 +33,7 @@ En Svelte, una aplicación está compuesta por uno o más componentes. Un compon
 
 ### Ejemplo
 
-```bash
+```svelte
 <script>
   let name = 'world';
 </script>
@@ -45,7 +45,7 @@ Entre llaves podemos poner el código JavaScript que querramos.
 
 ## Atributos dinámicos
 
-```bash
+```svelte
 <script>
   let src = 'imagen.jpg';
 </script>
@@ -55,7 +55,7 @@ Entre llaves podemos poner el código JavaScript que querramos.
 
 como el nombre y el valor del atributo son lo mismo, se puede escribir así:
 
-```bash
+```svelte
 <img {src} alt="Imagen de ejemplo.">
 ```
 
@@ -63,7 +63,7 @@ como el nombre y el valor del atributo son lo mismo, se puede escribir así:
 
 Al igual que en HTML, podemos agregar el tag `<style>` a nuestro componente y ahí poner el css que deseemos. Los estilos se van a aplicar solo a ese componente.
 
-```bash
+```svelte
 <style>
   p {
     color: purple;
@@ -79,7 +79,7 @@ Al igual que en HTML, podemos agregar el tag `<style>` a nuestro componente y ah
 
 Podemos importar componentes de otros archivos e incluirlos como muestra este ejemplo:
 
-```bash
+```svelte
 <script>
   import Nested from './Nested.svelte';
 </script>
@@ -94,8 +94,7 @@ Podemos importar componentes de otros archivos e incluirlos como muestra este ej
 
 El DOM se mantiene sincronizado con el estado de nuestra aplicación - por ejemplo, en respuesta a un evento.
 
-```bash
-
+```svelte
 <script>
   let count = 0;
     
@@ -107,7 +106,6 @@ El DOM se mantiene sincronizado con el estado de nuestra aplicación - por ejemp
 <button on:click={handleClick}>
   Clicked {count} {count === 1 ? 'time' : 'times'}
 </button>
-
 ```
 
 ## Declaraciones
@@ -116,7 +114,7 @@ Svelte automáticamente actualiza el DOM cuando el estado de tu componente cambi
 
 Para eso tenemos las declaraciones reactivas:
 
-```bash
+```svelte
 <script>
   let count = 0;
   
@@ -142,7 +140,7 @@ Como la reactividad se dispara por asignaciones, usar métodos de arrays como pu
 
 Una forma de solucionar esto es agregar una asignación que parece redundante:
 
-```bash
+```js
 function addNumber() {
   numbers.push(numbers.length + 1);
   numbers = numbers;
@@ -151,7 +149,7 @@ function addNumber() {
 
 Una solución más idiomática sería usando el spread operator:
 
-```bash
+```js
 function addNumber() {
   numbers = [...numbers, numbers.length + 1];
 }
@@ -168,7 +166,7 @@ El binding es bidireccional para cargar todos los datos de una apuesta: fecha, m
 ### Ingreso de una fecha
 
 Para abrir un calendario en un formulario modal, utilizamos el control Datepicker, de la siguiente manera:
-```bash
+```svelte
 <Datepicker
   format={'#{d}/#{m}/#{Y}'}
   start={new Date()}
@@ -177,7 +175,7 @@ Para abrir un calendario en un formulario modal, utilizamos el control Datepicke
 
 Esto requiere hacer el siguiente import:
 
-```bash
+```svelte
 import Datepicker from 'svelte-calendar'
 ```
 
@@ -191,13 +189,13 @@ En nuestro modelo, la apuesta tiene un strategy TipoApuesta cuyas responsabilida
 - validar si el tipo de apuesta es correcto
 
 El componente principal (_App.svelte_) genera la lista de tipos de apuesta para poder llenar las opciones posibles del primer combo:
-```bash
+```js
   let tiposApuesta = [PLENO, DOCENA]
 ```
 
 Apuesta.PLENO y Apuesta.DOCENA son dos constantes, ¿por qué hacemos esto? Porque a su vez la apuesta inicializa la referencia tipoApuesta como pleno:
 
-```bash
+```js
 export class Apuesta {
   constructor() {
     this.fecha = new Date()
@@ -215,7 +213,7 @@ export const DOCENA = new Docena()
 
 Veamos cómo se define el selector HTML en la vista:
 
-```bash
+```svelte
       <FormGroup>
         <h5 for="tipoDeApuesta">Tipo de Apuesta</h5>
         <select
@@ -233,18 +231,18 @@ Veamos cómo se define el selector HTML en la vista:
 ```
 Aquí vemos quie las opciones salen de la colección tiposApuesta que define el componente svelte, mientras que hay un binding bidireccional del select hacia apuesta.tipoApuesta. Entonces si la apuesta tiene un valor que no está dentro de las opciones, no será una selección válida para el combo, y no va a mostrar nada. Es decir, tanto la lista de tipos de apuesta como el valor tipoApuesta tienen que coincidir, no es válido hacer en apuesta:
 
-```bash
+```js
   this.tipoApuesta = new Pleno()
 ```
 Ni en el componente svelte
-```bash
+```js
   let tiposApuesta = [new Pleno(), new Docena()]
 ```
 
 porque eso genera nuevas copias de Pleno y Docena que son distintas a las que tendría Apuesta.
 
 Por otra parte, los valores a apostar son numéricos, esto evita nuevas copias y por lo tanto, malos entendidos en el segundo combo. Vemos la configuración del selector en la vista:
-```bash
+```svelte
      <FormGroup>
         <h5 for="numeroApuesta">Qué apostás</h5>
         <select
@@ -264,7 +262,7 @@ Es interesante que las opciones salen de `apuesta.tipoApuesta.valoresAApostar`, 
 
 Un detalle adicional, se puede bindear el modelo de cada opción (bind:value) vs. el valor a mostrar (el html encerrado entre los tags option):
 
-```bash
+```svelte
   {#each apuesta.tipoApuesta.valoresAApostar as opcion}
     <option>{opcion}</option>
   {/each}
@@ -276,7 +274,7 @@ Un detalle adicional, se puede bindear el modelo de cada opción (bind:value) vs
 
 Dado que al apostar los objetos de dominio apuesta pueden tirar errores de validación:
 
-```bash
+```js
   validarApuesta() {
     const now = new Date()
     now.setHours(0, 0, 0, 0)
@@ -290,7 +288,7 @@ Dado que al apostar los objetos de dominio apuesta pueden tirar errores de valid
 
 lo que hace el componente svelte es interceptar los errores y guardarlos en una variable errorMessage
 
-```bash
+```js
   function apostar() {
     try {
       errorMessage = ''
@@ -305,14 +303,14 @@ lo que hace el componente svelte es interceptar los errores y guardarlos en una 
 que a su vez la vista muestra llamando al componente _Error_ que se encarga de mostralo con un cartel en rojo (si la referencia tiene algún valor)
 
 _App.svelte_
-```bash
+```svelte
     <div class="error">
       <Error bind:message={errorMessage} />
     </div>
  ```
  
 _Error.svelte_
-```bash
+```svelte
     <div class="error">
       <Alert class="error" color="danger" isOpen={message} toggle={() => (message = '')}>{message}</Alert>
     </div>
@@ -323,19 +321,20 @@ _Error.svelte_
 Una vez pasadas las validaciones, se genera un objeto _Resultado_ dentro del objeto apuesta, que se visualiza en la vista. La visualización la delegamos al componente de svelte _Resultado_.
 
 _App.svelte_
-```bash
+```svelte
   {#if apuesta.resultado}
     <Resultado bind:resultado={apuesta.resultado} />
   {/if}
 ```
 
 _Resultado.svelte_
-```bash
-{#if resultado}
-  <div class="resultado>
-    <Alert color={resultado.gano() ? 'success' : 'warning'} toggle={() => (resultado = null)}>
-      <strong>{resultado.valor()}</strong>
-    </Alert>
-  </div>
-{/if}
+```svelte
+<div class="resultado" on:mouseenter={handleMouseenter} on:mouseleave={handleMouseleave}>
+  <Alert color={resultado.gano() ? 'success' : 'warning'} isOpen={resultado} toggle={() => (resultado = null)}>
+    {resultado.valor()}
+  </Alert>
+  {#if resultado.gano()}
+    <Gatuli {hereKitty} />
+  {/if}
+</div>
 ```
