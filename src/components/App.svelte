@@ -1,9 +1,7 @@
 <script>
-  import { onMount } from 'svelte'
-  import { Alert, Button, FormGroup, Input, Label } from 'sveltestrap'
   import Datepicker from 'svelte-calendar'
-
-  import { Pleno, Docena, Apuesta, PLENO, DOCENA } from '../model/apuesta'
+  import { FormGroup } from 'sveltestrap'
+  import { Apuesta, DOCENA, PLENO } from '../model/apuesta'
   import Error from './Error.svelte'
   import Resultado from './Resultado.svelte'
 
@@ -60,7 +58,7 @@
         <Datepicker
           format={'#{d}/#{m}/#{Y}'}
           start={new Date()}
-          on:dateSelected={event => (apuesta.fecha = event.detail.date)} />
+          on:dateSelected={(event) => (apuesta.fecha = event.detail.date)} />
       </FormGroup>
       <FormGroup>
         <div class="md-form">
