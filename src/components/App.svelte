@@ -79,7 +79,7 @@
         <h5 for="tipoDeApuesta">Tipo de Apuesta</h5>
         <select
           bind:value={apuesta.tipoApuesta}
-          on:change={() => (apuesta.valorApostado = apuesta.tipoApuesta.valoresAApostar[0])}
+          on:blur={() => (apuesta.valorApostado = apuesta.tipoApuesta.valoresAApostar[0])}
           class="form-control"
           required="true"
           name="select"
