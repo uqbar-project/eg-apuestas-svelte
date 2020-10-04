@@ -16,8 +16,20 @@ const TERCERA = {
   max: 36,
 }
 
-export class Pleno {
+export class TipoDeApuesta {
+  validar(apuesta) {
+    if (apuesta.monto <= this.MINIMO_APUESTA) {
+      throw `Debe apostar más de $${this.MINIMO_APUESTA}`
+    }
+    if (apuesta.monto > this.MAXIMO_APUESTA) {
+      throw `No puede apostar más de $${this.MAXIMO_APUESTA}`
+    }
+  }
+}
+
+export class Pleno extends TipoDeApuesta {
   constructor() {
+    super()
     this.ganancia = 35
     this.descripcion = 'Pleno'
     this.MINIMO_APUESTA = 10
@@ -25,36 +37,19 @@ export class Pleno {
     this.valoresAApostar = [...Array(37).keys()]
   }
 
-  validar(apuesta) {
-    if (apuesta.monto <= this.MINIMO_APUESTA) {
-      throw `Debe apostar más de $${this.MINIMO_APUESTA}`
-    }
-    if (apuesta.monto > this.MAXIMO_APUESTA) {
-      throw `No puede apostar más de $${this.MAXIMO_APUESTA}`
-    }
-  }
-
   esGanador(numeroGanador, valorApostado) {
     return numeroGanador === valorApostado
   }
 }
 
-export class Docena {
+export class Docena extends TipoDeApuesta {
   constructor() {
+    super()
     this.ganancia = 11
     this.descripcion = 'Docena'
     this.valoresAApostar = [PRIMERA, SEGUNDA, TERCERA]
     this.MINIMO_APUESTA = 50
     this.MAXIMO_APUESTA = 100000
-  }
-
-  validar(apuesta) {
-    if (apuesta.monto <= this.MINIMO_APUESTA) {
-      throw `Debe apostar más de $${this.MINIMO_APUESTA}`
-    }
-    if (apuesta.monto > this.MAXIMO_APUESTA) {
-      throw `No puede apostar más de $${this.MAXIMO_APUESTA}`
-    }
   }
 
   esGanador(numeroGanador, valorApostado) {
