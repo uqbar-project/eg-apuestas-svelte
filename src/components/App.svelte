@@ -27,21 +27,16 @@
   .boton {
     margin-top: 2rem;
     font-size: 0.8rem;
-    padding: 0.8rem;
-    padding-right: 2rem;
-    padding-left: 2rem;
+    padding: 0.8rem 2rem;
   }
 
   .error {
-    margin-top: 1rem;
-    margin-bottom: 1rem;
+    margin: 1rem 0
   }
 
   .apuesta-form {
-    margin-top: 2rem;
-    margin-bottom: 2rem;
+    margin: 2rem 0;
     padding: 2rem;
-    /* background-color: #46b3e6 !important; */
   }
 </style>
 
