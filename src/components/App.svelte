@@ -1,5 +1,4 @@
 <script>
-  import Datepicker from 'svelte-calendar'
   import { FormGroup } from 'sveltestrap'
   import { Apuesta, DOCENA, PLENO } from '../model/apuesta'
   import Error from './Error.svelte'
@@ -18,6 +17,8 @@
       errorMessage = validationError
     }
   }
+
+  const fechaDeHoyString = () => new Date().toISOString().split('T')[0]
 </script>
 
 <style>
@@ -31,7 +32,7 @@
   }
 
   .error {
-    margin: 1rem 0
+    margin: 1rem 0;
   }
 
   .apuesta-form {
@@ -50,10 +51,13 @@
     <div class="card apuesta-form">
       <FormGroup>
         <h5 for="date">Fecha</h5>
-        <Datepicker
-          format={'#{d}/#{m}/#{Y}'}
-          start={new Date()}
-          on:dateSelected={(event) => (apuesta.fecha = event.detail.date)} />
+        <input
+          type="date"
+          value={fechaDeHoyString()}
+          min={fechaDeHoyString()}
+          on:change={(event) => {
+            apuesta.setFecha(event.target.value)
+          }} />
       </FormGroup>
       <FormGroup>
         <div class="md-form">

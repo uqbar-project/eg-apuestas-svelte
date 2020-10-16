@@ -100,6 +100,11 @@ export class Apuesta {
     }
     this.resultado = new Resultado(numeroGanador, ganancia)
   }
+
+  setFecha(fechaString) {
+    var fecha = fechaString.split(/\D/)
+    this.fecha = new Date(fecha[0], --fecha[1], fecha[2])
+  }
 }
 
 export const PLENO = new Pleno()
