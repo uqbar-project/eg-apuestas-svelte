@@ -10,5 +10,5 @@
 </style>
 
 <div class="error">
-  <Alert class="error" color="danger" isOpen={message} toggle={() => (message = '')}>{message}</Alert>
+  <Alert class="error" color="danger" data-testid="error" isOpen={message} toggle={() => (message = '')}>{message}</Alert>
 </div>

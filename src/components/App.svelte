@@ -68,6 +68,7 @@
             required="true"
             type="number"
             name="number"
+            data-testid="monto_input"
             id="montoApuesta"
             bind:value={apuesta.monto} />
         </div>
@@ -100,7 +101,11 @@
         </select>
       </FormGroup>
       <div class="centrado">
-        <button on:click={apostar} type="button" class="btn btn-success boton">APOSTAR</button>
+        <button
+          on:click={apostar}
+          type="button"
+          class="btn btn-success boton"
+          data-testid="boton_apostar">APOSTAR</button>
       </div>
     </div>
     {#if apuesta.resultado}
