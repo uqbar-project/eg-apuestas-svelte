@@ -4,8 +4,10 @@ import App from '../components/App'
 
 test('no lleno nada', async () => {
   const { getByTestId } = render(App)
-
+  const monto = getByTestId('monto_input')
   const boton = getByTestId('boton_apostar')
+
+  fireEvent.input(monto, { target: { value: null } })
 
   await fireEvent.click(boton)
 

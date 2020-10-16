@@ -75,7 +75,7 @@ export class Apuesta {
     if (now.getTime() > this.fecha.getTime()) {
       throw 'Debe ingresar una fecha actual o posterior al día de hoy'
     }
-    if (this.monto === undefined) {
+    if (this.monto == null) {
       throw 'Debe ingresar un monto para apostar'
     }
     if (this.monto <= 0) {
@@ -84,7 +84,7 @@ export class Apuesta {
     if (!this.tipoApuesta) {
       throw 'Debe ingresar tipo de apuesta'
     }
-    if (this.valorApostado === undefined) {
+    if (this.valorApostado == null) {
       throw 'Debe ingresar valor a apostar'
     }
     this.tipoApuesta.validar(this)
