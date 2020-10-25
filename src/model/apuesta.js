@@ -18,11 +18,11 @@ const TERCERA = {
 
 export class TipoDeApuesta {
   validar(apuesta) {
-    if (apuesta.monto <= this.MINIMO_APUESTA) {
-      throw `Debe apostar más de $${this.MINIMO_APUESTA}`
+    if (apuesta.monto < this.MINIMO_APUESTA) {
+      throw `El monto mínimo de apuesta es $${this.MINIMO_APUESTA}`
     }
     if (apuesta.monto > this.MAXIMO_APUESTA) {
-      throw `No puede apostar más de $${this.MAXIMO_APUESTA}`
+      throw `El monto máximo de apuesta es $${this.MAXIMO_APUESTA}`
     }
   }
 }
