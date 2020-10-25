@@ -31,7 +31,8 @@
     padding: 0.8rem 2rem;
   }
 
-  .error {
+  .error-container {
+    height: 3rem;
     margin: 1rem 0;
   }
 
@@ -43,7 +44,7 @@
 
 <div class="container">
   <div>
-    <div class="error">
+    <div class="error-container">
       <Error bind:message={errorMessage} />
     </div>
 
@@ -81,9 +82,12 @@
           class="form-control"
           required="true"
           name="select"
-          id="tipoDeApuesta">
+          id="tipoDeApuesta"
+          data-testid="tipo_de_apuesta_select">
           {#each tiposApuesta as opcion}
-            <option value={opcion}>{opcion.descripcion}</option>
+            <option data-testid={'opcion_' + opcion.descripcion.toLowerCase()} value={opcion}>
+              {opcion.descripcion}
+            </option>
           {/each}
         </select>
       </FormGroup>
