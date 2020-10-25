@@ -2,7 +2,7 @@ import '@testing-library/jest-dom/extend-expect'
 import { fireEvent, render } from '@testing-library/svelte'
 import userEvent from '@testing-library/user-event'
 import App from '../components/App'
-import { Docena, DOCENA, PLENO as minimo, PLENO } from '../model/apuesta'
+import { DOCENA, PLENO } from '../model/apuesta'
 
 let getByTestId
 let queryByTestId
