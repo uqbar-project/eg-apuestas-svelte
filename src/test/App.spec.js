@@ -2,7 +2,7 @@ import '@testing-library/jest-dom/extend-expect'
 import { fireEvent, render } from '@testing-library/svelte'
 import userEvent from '@testing-library/user-event'
 import App from '../components/App'
-import { Docena, DOCENA, PLENO } from '../model/apuesta'
+import { Docena, DOCENA, PLENO as minimo, PLENO } from '../model/apuesta'
 
 let getByTestId
 let queryByTestId
@@ -32,7 +32,7 @@ describe('Apuesta', () => {
 
       await fireEvent.click(botonApostar)
 
-      expect(getByTestId(`error`)).toHaveTextContent('El monto a apostar debe ser positivo')
+      expectErrorMontoNoPositivo()
     })
 
     test('no se puede apostar 0 de monto', async () => {
@@ -40,65 +40,64 @@ describe('Apuesta', () => {
 
       await fireEvent.click(botonApostar)
 
-      expect(getByTestId(`error`)).toHaveTextContent('El monto a apostar debe ser positivo')
+      expectErrorMontoNoPositivo()
     })
   })
 
   describe('Pleno', () => {
     let opcionPleno
+    let minimo = PLENO.MINIMO_APUESTA
+    let maximo = PLENO.MAXIMO_APUESTA
+
     beforeEach(() => {
       opcionPleno = getByTestId('opcion_pleno')
       userEvent.selectOptions(tipoDeApuestaSelect, [opcionPleno])
     })
 
     test('no se puede apostar menos del monto mínimo', async () => {
-      fireEvent.input(montoInput, { target: { value: PLENO.MINIMO_APUESTA - 1 } })
+      fireEvent.input(montoInput, { target: { value: minimo - 1 } })
 
       await fireEvent.click(botonApostar)
 
-      expect(getByTestId(`error`)).toHaveTextContent(`El monto mínimo de apuesta es $${PLENO.MINIMO_APUESTA}`)
+      expectErrorMontoMinimo(minimo)
     })
     test('se puede apostar el monto mínimo', async () => {
-      fireEvent.input(montoInput, { target: { value: PLENO.MINIMO_APUESTA } })
+      fireEvent.input(montoInput, { target: { value: minimo } })
 
       await fireEvent.click(botonApostar)
 
-      expect(queryByTestId(`error`)).not.toBeInTheDocument()
-
-      expect(getByTestId(`resultado`)).toBeInTheDocument()
+      expectResultado()
     })
 
     test('no se puede apostar un monto superior al máximo', async () => {
-      fireEvent.input(montoInput, { target: { value: PLENO.MAXIMO_APUESTA + 1 } })
+      fireEvent.input(montoInput, { target: { value: maximo + 1 } })
 
       await fireEvent.click(botonApostar)
 
-      expect(getByTestId(`error`)).toHaveTextContent(`El monto máximo de apuesta es $${PLENO.MAXIMO_APUESTA}`)
+      expectErrorMontoMaximo(maximo)
     })
 
     test('se puede apostar el monto máximo', async () => {
-      fireEvent.input(montoInput, { target: { value: PLENO.MAXIMO_APUESTA } })
+      fireEvent.input(montoInput, { target: { value: maximo } })
 
       await fireEvent.click(botonApostar)
 
-      expect(queryByTestId(`error`)).not.toBeInTheDocument()
-
-      expect(getByTestId(`resultado`)).toBeInTheDocument()
+      expectResultado()
     })
 
     test('se puede apostar un monto entre el mínimo y el máximo', async () => {
-      fireEvent.input(montoInput, { target: { value: PLENO.MINIMO_APUESTA + 1 } })
+      fireEvent.input(montoInput, { target: { value: minimo + 1 } })
 
       await fireEvent.click(botonApostar)
 
-      expect(queryByTestId(`error`)).not.toBeInTheDocument()
-
-      expect(getByTestId(`resultado`)).toBeInTheDocument()
+      expectResultado()
     })
   })
 
   describe('Docena', () => {
     let opcionDocena
+    let minimo = DOCENA.MINIMO_APUESTA
+    let maximo = DOCENA.MAXIMO_APUESTA
     beforeEach(() => {
       opcionDocena = queryByTestId('opcion_docena')
 
@@ -106,48 +105,57 @@ describe('Apuesta', () => {
     })
 
     test('no se puede apostar menos del monto mínimo', async () => {
-      fireEvent.input(montoInput, { target: { value: DOCENA.MINIMO_APUESTA - 1 } })
+      fireEvent.input(montoInput, { target: { value: minimo - 1 } })
 
       await fireEvent.click(botonApostar)
 
-      expect(getByTestId(`error`)).toHaveTextContent(`El monto mínimo de apuesta es $${DOCENA.MINIMO_APUESTA}`)
+      expectErrorMontoMinimo(minimo)
     })
     test('se puede apostar el monto mínimo', async () => {
-      fireEvent.input(montoInput, { target: { value: DOCENA.MINIMO_APUESTA } })
+      fireEvent.input(montoInput, { target: { value: minimo } })
 
       await fireEvent.click(botonApostar)
 
-      expect(queryByTestId(`error`)).not.toBeInTheDocument()
-
-      expect(getByTestId(`resultado`)).toBeInTheDocument()
+      expectResultado()
     })
 
     test('se puede apostar el monto máximo', async () => {
-      fireEvent.input(montoInput, { target: { value: DOCENA.MAXIMO_APUESTA } })
+      fireEvent.input(montoInput, { target: { value: maximo } })
 
       await fireEvent.click(botonApostar)
 
-      expect(queryByTestId(`error`)).not.toBeInTheDocument()
-
-      expect(getByTestId(`resultado`)).toBeInTheDocument()
+      expectResultado()
     })
 
     test('no se puede apostar un monto superior al máximo', async () => {
-      fireEvent.input(montoInput, { target: { value: DOCENA.MAXIMO_APUESTA + 1 } })
+      fireEvent.input(montoInput, { target: { value: maximo + 1 } })
 
       await fireEvent.click(botonApostar)
 
-      expect(getByTestId(`error`)).toHaveTextContent(`El monto máximo de apuesta es $${DOCENA.MAXIMO_APUESTA}`)
+      expectErrorMontoMaximo(maximo)
     })
 
     test('se puede apostar un monto entre el mínimo y el máximo', async () => {
-      fireEvent.input(montoInput, { target: { value: DOCENA.MINIMO_APUESTA + 1 } })
+      fireEvent.input(montoInput, { target: { value: minimo + 1 } })
 
       await fireEvent.click(botonApostar)
 
-      expect(queryByTestId(`error`)).not.toBeInTheDocument()
-
-      expect(getByTestId(`resultado`)).toBeInTheDocument()
+      expectResultado()
     })
   })
 })
+
+const expectError = (mensaje) => expect(getByTestId(`error`)).toHaveTextContent(mensaje)
+
+const expectErrorMontoNoPositivo = () => expectError('El monto a apostar debe ser positivo')
+
+const expectErrorRangoMonto = (nombre, valor) => expectError(`El monto ${nombre} de apuesta es $${valor}`)
+
+const expectErrorMontoMinimo = (valor) => expectErrorRangoMonto('mínimo', valor)
+
+const expectErrorMontoMaximo = (valor) => expectErrorRangoMonto('máximo', valor)
+
+const expectResultado = () => {
+  expect(queryByTestId(`error`)).not.toBeInTheDocument()
+  expect(getByTestId(`resultado`)).toBeInTheDocument()
+}
