@@ -24,7 +24,7 @@ describe('Apuesta', () => {
 
       await fireEvent.click(botonApostar)
 
-      expect(getByTestId(`error`)).toHaveTextContent(`Debe ingresar un monto para apostar`)
+      expectError(`Debe ingresar un monto para apostar`)
     })
 
     test('no se puede apostar un monto negativo', async () => {
@@ -32,7 +32,7 @@ describe('Apuesta', () => {
 
       await fireEvent.click(botonApostar)
 
-      expectErrorMontoNoPositivo()
+      expectError('El monto a apostar debe ser positivo')
     })
 
     test('no se puede apostar 0 de monto', async () => {
@@ -40,14 +40,14 @@ describe('Apuesta', () => {
 
       await fireEvent.click(botonApostar)
 
-      expectErrorMontoNoPositivo()
+      expectError('El monto a apostar debe ser positivo')
     })
   })
 
   describe('Pleno', () => {
     let opcionPleno
-    let minimo = PLENO.MINIMO_APUESTA
-    let maximo = PLENO.MAXIMO_APUESTA
+    const minimo = PLENO.MINIMO_APUESTA
+    const maximo = PLENO.MAXIMO_APUESTA
 
     beforeEach(() => {
       opcionPleno = getByTestId('opcion_pleno')
@@ -59,7 +59,7 @@ describe('Apuesta', () => {
 
       await fireEvent.click(botonApostar)
 
-      expectErrorMontoMinimo(minimo)
+      expectError(`El monto mínimo de apuesta es $${minimo}`)
     })
     test('se puede apostar el monto mínimo', async () => {
       fireEvent.input(montoInput, { target: { value: minimo } })
@@ -74,7 +74,7 @@ describe('Apuesta', () => {
 
       await fireEvent.click(botonApostar)
 
-      expectErrorMontoMaximo(maximo)
+      expectError(`El monto máximo de apuesta es $${maximo}`)
     })
 
     test('se puede apostar el monto máximo', async () => {
@@ -96,10 +96,10 @@ describe('Apuesta', () => {
 
   describe('Docena', () => {
     let opcionDocena
-    let minimo = DOCENA.MINIMO_APUESTA
-    let maximo = DOCENA.MAXIMO_APUESTA
+    const minimo = DOCENA.MINIMO_APUESTA
+    const maximo = DOCENA.MAXIMO_APUESTA
     beforeEach(() => {
-      opcionDocena = queryByTestId('opcion_docena')
+      opcionDocena = getByTestId('opcion_docena')
 
       userEvent.selectOptions(tipoDeApuestaSelect, [opcionDocena])
     })
@@ -109,7 +109,7 @@ describe('Apuesta', () => {
 
       await fireEvent.click(botonApostar)
 
-      expectErrorMontoMinimo(minimo)
+      expectError(`El monto mínimo de apuesta es $${minimo}`)
     })
     test('se puede apostar el monto mínimo', async () => {
       fireEvent.input(montoInput, { target: { value: minimo } })
@@ -132,7 +132,7 @@ describe('Apuesta', () => {
 
       await fireEvent.click(botonApostar)
 
-      expectErrorMontoMaximo(maximo)
+      expectError(`El monto máximo de apuesta es $${maximo}`)
     })
 
     test('se puede apostar un monto entre el mínimo y el máximo', async () => {
@@ -147,15 +147,7 @@ describe('Apuesta', () => {
 
 const expectError = (mensaje) => expect(getByTestId(`error`)).toHaveTextContent(mensaje)
 
-const expectErrorMontoNoPositivo = () => expectError('El monto a apostar debe ser positivo')
-
-const expectErrorRangoMonto = (nombre, valor) => expectError(`El monto ${nombre} de apuesta es $${valor}`)
-
-const expectErrorMontoMinimo = (valor) => expectErrorRangoMonto('mínimo', valor)
-
-const expectErrorMontoMaximo = (valor) => expectErrorRangoMonto('máximo', valor)
-
 const expectResultado = () => {
-  expect(queryByTestId(`error`)).not.toBeInTheDocument()
+  expect(queryByTestId(`error`)).toBeNull()
   expect(getByTestId(`resultado`)).toBeInTheDocument()
 }
