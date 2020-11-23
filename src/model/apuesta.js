@@ -1,4 +1,6 @@
 import Resultado from './resultado'
+import { writable } from 'svelte/store'
+import { readable } from 'svelte/store'
 
 const PRIMERA = {
   toString: () => 'Primera',
@@ -63,7 +65,10 @@ export class Apuesta {
     this.monto
     this.tipoApuesta = PLENO
     this.valorApostado
-    this.resultado
+    this._resultado = writable(new Resultado())
+    // this.subscribe =
+    // this.update = writable(null)
+    // this.reset = writable(null)
   }
 
   validarApuesta() {
@@ -91,14 +96,26 @@ export class Apuesta {
   }
 
   apostar() {
-    this.resultado = null
+    // this.resultado = null
     this.validarApuesta()
     const numeroGanador = Math.floor(Math.random() * 37)
     let ganancia = 0
     if (this.tipoApuesta.esGanador(numeroGanador, this.valorApostado)) {
       ganancia = this.monto * this.tipoApuesta.ganancia
     }
-    this.resultado = new Resultado(numeroGanador, ganancia)
+    this._resultado = new Resultado(numeroGanador, ganancia)
+    console.log(this.resultado)
+    console.log(this._resultado)
+  }
+
+  get resultado() {
+    console.log(`llamaron al getter de resultado,
+     devuelvo $_resultado: ${this.$_resultado}`)
+    return this._resultado
+  }
+
+  set resultado(res) {
+    this._resultado.update((v) => res)
   }
 
   setFecha(fechaString) {
@@ -109,3 +126,6 @@ export class Apuesta {
 
 export const PLENO = new Pleno()
 export const DOCENA = new Docena()
+// export const apuesta = writable(new Apuesta())
+
+export const apuesta = new Apuesta()

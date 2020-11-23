@@ -1,20 +1,24 @@
 <script>
   import { FormGroup } from 'sveltestrap'
-  import { Apuesta, DOCENA, PLENO } from '../model/apuesta'
+  import { apuesta, DOCENA, PLENO } from '../model/apuesta.js'
   import Error from './Error.svelte'
   import Resultado from './Resultado.svelte'
 
-  let apuesta = new Apuesta()
+  // apuesta
   let tiposApuesta = [PLENO, DOCENA]
   let errorMessage = ''
+
+
+  console.log(apuesta.resultado)
 
   function apostar() {
     try {
       errorMessage = ''
       apuesta.apostar()
-      apuesta = apuesta
+      // apuesta = apuesta
     } catch (validationError) {
       errorMessage = validationError
+      throw validationError
     }
   }
 
