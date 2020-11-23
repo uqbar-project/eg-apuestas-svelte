@@ -15,7 +15,7 @@
 </style>
 
 {#if resultado}
-  <div class="resultado" on:mouseenter={handleMouseenter} on:mouseleave={handleMouseleave}>
+  <div data-testid="resultado"  class="resultado" on:mouseenter={handleMouseenter} on:mouseleave={handleMouseleave}>
     <Alert color={resultado.gano() ? 'success' : 'warning'} toggle={() => (resultado = null)}>
       <strong>{resultado.valor()}</strong>
     </Alert>

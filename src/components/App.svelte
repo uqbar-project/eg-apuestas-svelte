@@ -1,5 +1,4 @@
 <script>
-  import Datepicker from 'svelte-calendar'
   import { FormGroup } from 'sveltestrap'
   import { Apuesta, DOCENA, PLENO } from '../model/apuesta'
   import Error from './Error.svelte'
@@ -18,6 +17,8 @@
       errorMessage = validationError
     }
   }
+
+  const fechaDeHoyString = () => new Date().toISOString().split('T')[0]
 </script>
 
 <style>
@@ -30,8 +31,9 @@
     padding: 0.8rem 2rem;
   }
 
-  .error {
-    margin: 1rem 0
+  .error-container {
+    height: 3rem;
+    margin: 1rem 0;
   }
 
   .apuesta-form {
@@ -42,7 +44,7 @@
 
 <div class="container">
   <div>
-    <div class="error">
+    <div class="error-container">
       <Error bind:message={errorMessage} />
     </div>
 
@@ -50,10 +52,13 @@
     <div class="card apuesta-form">
       <FormGroup>
         <h5 for="date">Fecha</h5>
-        <Datepicker
-          format={'#{d}/#{m}/#{Y}'}
-          start={new Date()}
-          on:dateSelected={(event) => (apuesta.fecha = event.detail.date)} />
+        <input
+          type="date"
+          value={fechaDeHoyString()}
+          min={fechaDeHoyString()}
+          on:change={(event) => {
+            apuesta.setFecha(event.target.value)
+          }} />
       </FormGroup>
       <FormGroup>
         <div class="md-form">
@@ -64,6 +69,7 @@
             required="true"
             type="number"
             name="number"
+            data-testid="monto_input"
             id="montoApuesta"
             bind:value={apuesta.monto} />
         </div>
@@ -76,9 +82,12 @@
           class="form-control"
           required="true"
           name="select"
-          id="tipoDeApuesta">
+          id="tipoDeApuesta"
+          data-testid="tipo_de_apuesta_select">
           {#each tiposApuesta as opcion}
-            <option value={opcion}>{opcion.descripcion}</option>
+            <option data-testid={'opcion_' + opcion.descripcion.toLowerCase()} value={opcion}>
+              {opcion.descripcion}
+            </option>
           {/each}
         </select>
       </FormGroup>
@@ -96,7 +105,11 @@
         </select>
       </FormGroup>
       <div class="centrado">
-        <button on:click={apostar} type="button" class="btn btn-success boton">APOSTAR</button>
+        <button
+          on:click={apostar}
+          type="button"
+          class="btn btn-success boton"
+          data-testid="boton_apostar">APOSTAR</button>
       </div>
     </div>
     {#if apuesta.resultado}

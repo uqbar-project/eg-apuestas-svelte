@@ -18,11 +18,11 @@ const TERCERA = {
 
 export class TipoDeApuesta {
   validar(apuesta) {
-    if (apuesta.monto <= this.MINIMO_APUESTA) {
-      throw `Debe apostar más de $${this.MINIMO_APUESTA}`
+    if (apuesta.monto < this.MINIMO_APUESTA) {
+      throw `El monto mínimo de apuesta es $${this.MINIMO_APUESTA}`
     }
     if (apuesta.monto > this.MAXIMO_APUESTA) {
-      throw `No puede apostar más de $${this.MAXIMO_APUESTA}`
+      throw `El monto máximo de apuesta es $${this.MAXIMO_APUESTA}`
     }
   }
 }
@@ -75,7 +75,7 @@ export class Apuesta {
     if (now.getTime() > this.fecha.getTime()) {
       throw 'Debe ingresar una fecha actual o posterior al día de hoy'
     }
-    if (this.monto === undefined) {
+    if (this.monto == null) {
       throw 'Debe ingresar un monto para apostar'
     }
     if (this.monto <= 0) {
@@ -84,7 +84,7 @@ export class Apuesta {
     if (!this.tipoApuesta) {
       throw 'Debe ingresar tipo de apuesta'
     }
-    if (this.valorApostado === undefined) {
+    if (this.valorApostado == null) {
       throw 'Debe ingresar valor a apostar'
     }
     this.tipoApuesta.validar(this)
@@ -99,6 +99,11 @@ export class Apuesta {
       ganancia = this.monto * this.tipoApuesta.ganancia
     }
     this.resultado = new Resultado(numeroGanador, ganancia)
+  }
+
+  setFecha(fechaString) {
+    var fecha = fechaString.split(/\D/)
+    this.fecha = new Date(fecha[0], --fecha[1], fecha[2])
   }
 }
 
