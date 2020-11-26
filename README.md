@@ -105,7 +105,7 @@ El DOM se mantiene sincronizado con el estado de nuestra aplicación - por ejemp
 
 ## Declaraciones reactivas
 
-Svelte automáticamente actualiza el DOM cuando el estado de tu componente cambia. A menudo, algunas partes del estado de un componente necesitan ser calculadas de otras partes y si estas cambian, volver a calcularlas.
+Svelte automáticamente actualiza el DOM cuando el estado de tu componente cambia. A menudo, algunas partes del estado de un componente necesitan ser calculadas de a partir de otros valores y si estas cambian, volver a calcularlas (el ejemplo de las fórmulas del excel).
 
 Para eso tenemos las declaraciones reactivas:
 
