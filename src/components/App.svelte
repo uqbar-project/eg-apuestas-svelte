@@ -3,20 +3,31 @@
   import { Apuesta, DOCENA, PLENO } from '../model/apuesta'
   import Error from './Error.svelte'
   import Resultado from './Resultado.svelte'
+  import { Badge } from 'sveltestrap'
 
   let apuesta = new Apuesta()
   let tiposApuesta = [PLENO, DOCENA]
   let errorMessage = ''
+  let historial = []
+  let resultado
 
   function apostar() {
     try {
       errorMessage = ''
-      apuesta.apostar()
-      apuesta = apuesta
+      resultado = apuesta.apostar()
+      historial = [...historial, resultado]
     } catch (validationError) {
       errorMessage = validationError
     }
   }
+
+  $: if (ganancias < -5000) {
+    console.log('Estás perdiendo mucha guita!')
+  }
+
+  $: gananciasBadge = ganancias > 0 ? 'success' : ganancias < 0 ? 'danger' : 'secondary'
+
+  $: ganancias = historial.map((resultado) => resultado.ganancia).reduce((a, b) => a + b, 0)
 
   const fechaDeHoyString = () => new Date().toISOString().split('T')[0]
 </script>
@@ -31,7 +42,8 @@
     padding: 0.8rem 2rem;
   }
 
-  .error-container {
+  .error-container,
+  .resultado-container {
     height: 3rem;
     margin: 1rem 0;
   }
@@ -112,8 +124,14 @@
           data-testid="boton_apostar">APOSTAR</button>
       </div>
     </div>
-    {#if apuesta.resultado}
-      <Resultado bind:resultado={apuesta.resultado} />
-    {/if}
+    <div class="resultado-container">
+      {#if resultado}
+        <Resultado {resultado} />
+      {/if}
+    </div>
+    <h2>
+      Ganancias:
+      <Badge color={gananciasBadge}>${ganancias}</Badge>
+    </h2>
   </div>
 </div>

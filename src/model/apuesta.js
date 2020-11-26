@@ -63,7 +63,6 @@ export class Apuesta {
     this.monto
     this.tipoApuesta = PLENO
     this.valorApostado
-    this.resultado
   }
 
   validarApuesta() {
@@ -91,14 +90,13 @@ export class Apuesta {
   }
 
   apostar() {
-    this.resultado = null
     this.validarApuesta()
     const numeroGanador = Math.floor(Math.random() * 37)
     let ganancia = 0
     if (this.tipoApuesta.esGanador(numeroGanador, this.valorApostado)) {
       ganancia = this.monto * this.tipoApuesta.ganancia
     }
-    this.resultado = new Resultado(numeroGanador, ganancia)
+    return new Resultado(numeroGanador, ganancia, this.monto)
   }
 
   setFecha(fechaString) {
