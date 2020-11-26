@@ -97,13 +97,9 @@ El DOM se mantiene sincronizado con el estado de nuestra aplicación - por ejemp
 ```svelte
 <script>
   let count = 0;
-    
-  function handleClick() {
-    count += 1;
-  }
 </script>
 
-<button on:click={handleClick}>
+<button on:click={()=> count += 1}>
   Clicked {count} {count === 1 ? 'time' : 'times'}
 </button>
 ```
