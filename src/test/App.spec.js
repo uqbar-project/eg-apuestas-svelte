@@ -1,5 +1,5 @@
 import '@testing-library/jest-dom/extend-expect'
-import { fireEvent, render } from '@testing-library/svelte'
+import { render, waitFor } from '@testing-library/svelte'
 import userEvent from '@testing-library/user-event'
 import App from '../components/App'
 import { DOCENA, PLENO } from '../model/apuesta'
@@ -11,7 +11,7 @@ let botonApostar
 let tipoDeApuestaSelect
 describe('Apuesta', () => {
   beforeEach(() => {
-    ;({ getByTestId, queryByTestId } = render(App))
+    ({ getByTestId, queryByTestId } = render(App))
 
     montoInput = getByTestId('monto_input')
     botonApostar = getByTestId('boton_apostar')
@@ -19,26 +19,26 @@ describe('Apuesta', () => {
   })
 
   describe('Validaciones generales', () => {
-    test('no se puede apostar si no se ingresa un monto a apostar', async () => {
-      fireEvent.input(montoInput, { target: { value: null } })
+    test('no se puede apostar si no se ingresa un monto a apostar', () => {
+      userEvent.clear(montoInput)
 
-      await fireEvent.click(botonApostar)
+      userEvent.click(botonApostar)
 
       expectError(`Debe ingresar un monto para apostar`)
     })
 
-    test('no se puede apostar un monto negativo', async () => {
-      fireEvent.input(montoInput, { target: { value: -10 } })
+    test('no se puede apostar un monto negativo', () => {
+      userEvent.type(montoInput, '-10')
 
-      await fireEvent.click(botonApostar)
+      userEvent.click(botonApostar)
 
       expectError('El monto a apostar debe ser positivo')
     })
 
-    test('no se puede apostar 0 de monto', async () => {
-      fireEvent.input(montoInput, { target: { value: 0 } })
+    test('no se puede apostar 0 de monto', () => {
+      userEvent.type(montoInput, '0')
 
-      await fireEvent.click(botonApostar)
+      userEvent.click(botonApostar)
 
       expectError('El monto a apostar debe ser positivo')
     })
@@ -54,41 +54,40 @@ describe('Apuesta', () => {
       userEvent.selectOptions(tipoDeApuestaSelect, [opcionPleno])
     })
 
-    test('no se puede apostar menos del monto mínimo', async () => {
-      fireEvent.input(montoInput, { target: { value: minimo - 1 } })
-
-      await fireEvent.click(botonApostar)
+    test('no se puede apostar menos del monto mínimo', () => {
+      userEvent.type(montoInput, `${minimo - 1}`)
+      userEvent.click(botonApostar)
 
       expectError(`El monto mínimo de apuesta es $${minimo}`)
     })
-    test('se puede apostar el monto mínimo', async () => {
-      fireEvent.input(montoInput, { target: { value: minimo } })
+    test('se puede apostar el monto mínimo', () => {
+      userEvent.type(montoInput, `${minimo}`)
 
-      await fireEvent.click(botonApostar)
+      userEvent.click(botonApostar)
 
       expectResultado()
     })
 
-    test('no se puede apostar un monto superior al máximo', async () => {
-      fireEvent.input(montoInput, { target: { value: maximo + 1 } })
+    test('no se puede apostar un monto superior al máximo', () => {
+      userEvent.type(montoInput, `${maximo + 1}`)
 
-      await fireEvent.click(botonApostar)
+      userEvent.click(botonApostar)
 
       expectError(`El monto máximo de apuesta es $${maximo}`)
     })
 
-    test('se puede apostar el monto máximo', async () => {
-      fireEvent.input(montoInput, { target: { value: maximo } })
+    test('se puede apostar el monto máximo', () => {
+      userEvent.type(montoInput, `${maximo}`)
 
-      await fireEvent.click(botonApostar)
+      userEvent.click(botonApostar)
 
       expectResultado()
     })
 
-    test('se puede apostar un monto entre el mínimo y el máximo', async () => {
-      fireEvent.input(montoInput, { target: { value: minimo + 1 } })
+    test('se puede apostar un monto entre el mínimo y el máximo', () => {
+      userEvent.type(montoInput, `${minimo + 1}`)
 
-      await fireEvent.click(botonApostar)
+      userEvent.click(botonApostar)
 
       expectResultado()
     })
@@ -104,50 +103,50 @@ describe('Apuesta', () => {
       userEvent.selectOptions(tipoDeApuestaSelect, [opcionDocena])
     })
 
-    test('no se puede apostar menos del monto mínimo', async () => {
-      fireEvent.input(montoInput, { target: { value: minimo - 1 } })
+    test('no se puede apostar menos del monto mínimo', () => {
+      userEvent.type(montoInput, `${minimo - 1}`)
 
-      await fireEvent.click(botonApostar)
+      userEvent.click(botonApostar)
 
       expectError(`El monto mínimo de apuesta es $${minimo}`)
     })
-    test('se puede apostar el monto mínimo', async () => {
-      fireEvent.input(montoInput, { target: { value: minimo } })
+    test('se puede apostar el monto mínimo', () => {
+      userEvent.type(montoInput, `${minimo}`)
 
-      await fireEvent.click(botonApostar)
-
-      expectResultado()
-    })
-
-    test('se puede apostar el monto máximo', async () => {
-      fireEvent.input(montoInput, { target: { value: maximo } })
-
-      await fireEvent.click(botonApostar)
+      userEvent.click(botonApostar)
 
       expectResultado()
     })
 
-    test('no se puede apostar un monto superior al máximo', async () => {
-      fireEvent.input(montoInput, { target: { value: maximo + 1 } })
+    test('se puede apostar el monto máximo', () => {
+      userEvent.type(montoInput, `${maximo}`)
 
-      await fireEvent.click(botonApostar)
+      userEvent.click(botonApostar)
+
+      expectResultado()
+    })
+
+    test('no se puede apostar un monto superior al máximo', () => {
+      userEvent.type(montoInput, `${maximo + 1}`)
+
+      userEvent.click(botonApostar)
 
       expectError(`El monto máximo de apuesta es $${maximo}`)
     })
 
-    test('se puede apostar un monto entre el mínimo y el máximo', async () => {
-      fireEvent.input(montoInput, { target: { value: minimo + 1 } })
+    test('se puede apostar un monto entre el mínimo y el máximo', () => {
+      userEvent.type(montoInput, `${minimo + 1}`)
 
-      await fireEvent.click(botonApostar)
+      userEvent.click(botonApostar)
 
       expectResultado()
     })
   })
 })
 
-const expectError = (mensaje) => expect(getByTestId(`error`)).toHaveTextContent(mensaje)
+const expectError = async (mensaje) => await waitFor(() => expect(getByTestId(`error`)).toHaveTextContent(mensaje))
 
-const expectResultado = () => {
-  expect(queryByTestId(`error`)).toBeNull()
+const expectResultado = async () => {
+  await waitFor(() => expect(queryByTestId(`error`)).toBeNull())
   expect(getByTestId(`resultado`)).toBeInTheDocument()
 }
