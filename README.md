@@ -8,13 +8,12 @@ Realizado con [Svelte](https://svelte.dev) e implementando binding bidireccional
 
 # Creación de la aplicación
 
-Creamos la aplicación con [degit](https://github.com/Rich-Harris/degit) y agregamos las dependencias de [sveltestrap](https://github.com/bestguy/sveltestrap) y [svelte-calendar](https://github.com/6eDesign/svelte-calendar/blob/master/README.md) para contar con un control calendario.
+Creamos la aplicación con [degit](https://github.com/Rich-Harris/degit) y agregamos la dependencia de [sveltestrap](https://github.com/bestguy/sveltestrap).
 
 ```bash
 npx degit sveltejs/template svelte-app
 cd svelte-app
 npm install --save svelte sveltestrap
-npm install svelte-calendar
 ```
 
 # Correr la aplicación
@@ -104,9 +103,9 @@ El DOM se mantiene sincronizado con el estado de nuestra aplicación - por ejemp
 </button>
 ```
 
-## Declaraciones
+## Declaraciones reactivas
 
-Svelte automáticamente actualiza el DOM cuando el estado de tu componente cambia. A menudo, algunas partes del estado de un componente necesitan ser calculadas de otras partes y si estas cambian, volver a calcularlas.
+Svelte automáticamente actualiza el DOM cuando el estado de tu componente cambia. A menudo, algunas partes del estado de un componente necesitan ser calculadas de a partir de otros valores y si estas cambian, volver a calcularlas (el ejemplo de las fórmulas del excel).
 
 Para eso tenemos las declaraciones reactivas:
 
@@ -143,7 +142,7 @@ function addNumber() {
 }
 ```
 
-Una solución más idiomática sería usando el spread operator:
+Una solución más idiomática:
 
 ```js
 function addNumber() {
@@ -158,22 +157,6 @@ Estos conceptos y otros más como props, lógica (parecido a los *ngIf, *ngFor, 
 ## Vista principal
 
 El binding es bidireccional para cargar todos los datos de una apuesta: fecha, monto, tipo de apuesta y valor apostado. Cuando el formulario tiene un error se visualiza dicho error con un cartel rojo (alert-warning), y cuando el usuario decide apostar se le informa si ganó o perdió con un cartel verde (alert-success).
-
-### Ingreso de una fecha
-
-Para abrir un calendario en un formulario modal, utilizamos el control Datepicker, de la siguiente manera:
-```svelte
-<Datepicker
-  format={'#{d}/#{m}/#{Y}'}
-  start={new Date()}
-  on:dateSelected={event => (apuesta.fecha = event.detail.date)} />
-```
-
-Esto requiere hacer el siguiente import:
-
-```svelte
-import Datepicker from 'svelte-calendar'
-```
 
 ### Combos anidados
 
@@ -198,7 +181,6 @@ export class Apuesta {
     this.monto
     this.tipoApuesta = PLENO
     this.valorApostado
-    this.resultado
   }
   ...
 }
