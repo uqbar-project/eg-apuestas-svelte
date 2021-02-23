@@ -40,6 +40,8 @@
     margin-top: 2rem;
     font-size: 0.8rem;
     padding: 0.8rem 2rem;
+    background-color: #036219;
+    color:white;
   }
 
   .error-container,
@@ -63,8 +65,9 @@
     <p class="h4 text-center mb-4 titulo">Apuestas de Ruleta</p>
     <div class="card apuesta-form">
       <FormGroup>
-        <h5 for="date">Fecha</h5>
+        <label for="fecha-apuesta">Fecha</label>
         <input
+          id="fecha-apuesta"
           type="date"
           value={fechaDeHoyString()}
           min={fechaDeHoyString()}
@@ -74,7 +77,7 @@
       </FormGroup>
       <FormGroup>
         <div class="md-form">
-          <h5 for="montoApuesta">Monto</h5>
+          <label for="montoApuesta">Monto</label>
           <input
             placeholder="Monto en $"
             class="form-control"
@@ -87,7 +90,7 @@
         </div>
       </FormGroup>
       <FormGroup>
-        <h5 for="tipoDeApuesta">Tipo de Apuesta</h5>
+        <label for="tipoDeApuesta">Tipo de Apuesta</label>
         <select
           bind:value={apuesta.tipoApuesta}
           on:blur={() => (apuesta.valorApostado = apuesta.tipoApuesta.valoresAApostar[0])}
@@ -104,7 +107,7 @@
         </select>
       </FormGroup>
       <FormGroup>
-        <h5 for="numeroApuesta">Qué apostás</h5>
+        <label for="numeroApuesta">Qué apostás</label>
         <select
           bind:value={apuesta.valorApostado}
           name="select"
@@ -120,7 +123,7 @@
         <button
           on:click={apostar}
           type="button"
-          class="btn btn-success boton"
+          class="btn boton"
           data-testid="boton_apostar">APOSTAR</button>
       </div>
     </div>
