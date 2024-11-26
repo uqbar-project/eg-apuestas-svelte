@@ -14,6 +14,7 @@
     tipoApuesta: PLENO,
     valorApostado: 1,
   })
+  // https://github.com/sveltejs/svelte/issues/10560
   let apuestaModel: Apuesta = $state(new Apuesta())
 
   const fechaMinimaApuesta = formatearFecha(new Date())
