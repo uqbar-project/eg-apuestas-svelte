@@ -82,12 +82,8 @@ export class Apuesta {
 		this.errors.length = 0 // TODO: add a helper function
 		const now = new Date()
 		now.setHours(0, 0, 0, 0)
-		if (!this.fecha) {
-			this.addError('fecha', 'Debe ingresar una fecha de apuesta')
-		} else {
-			if (dayjs(now).isAfter(dayjs(this.fecha))) {
-				this.addError('fecha', 'Debe ingresar una fecha actual o posterior al día de hoy')
-			}
+		if (dayjs(now).isAfter(dayjs(this.fecha))) {
+			this.addError('fecha', 'Debe ingresar una fecha actual o posterior al día de hoy')
 		}
 		if (this.monto <= 0) {
 			this.addError('monto', 'El monto a apostar debe ser positivo')
