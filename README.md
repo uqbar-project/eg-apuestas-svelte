@@ -4,3 +4,4 @@
 
 ![demo](./video/demo.gif)
 
+TODO 2: Explicación de por qué tenemos que separar los POJOs vs. el objeto apuesta (linkear el issue), la alternativa que sería tener un modelo Svelte con $state.
