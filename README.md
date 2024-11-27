@@ -4,4 +4,7 @@
 
 ![demo](./video/demo.gif)
 
-TODO 2: Explicación de por qué tenemos que separar los POJOs vs. el objeto apuesta (linkear el issue), la alternativa que sería tener un modelo Svelte con $state.
+## Binding del formulario
+
+Cada input de la página tiene un binding con una propiedad de nuestro modelo que es la Apuesta. En el caso de la fecha, dado que el input se asocia a un string, tenemos que utilizar una propiedad que hace de intermediario, para luego adaptarla de String a Date.
+
