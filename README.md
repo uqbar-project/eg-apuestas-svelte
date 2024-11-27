@@ -39,7 +39,7 @@ Esto implica que **no podemos migrar directamente** este ejemplo a otras tecnolo
   <div class="row">
     <label for="apuesta">Qué apostás</label>
     <select ... name="apuesta" bind:value={apuesta.valorApostado}>
-      {#each apuesta.tipoApuesta.valoresAApostar ?? [] as valor}
+      {#each apuesta.tipoApuesta?.valoresAApostar ?? [] as valor}
         <option value={valor}>{valor}</option>
       {/each}
     </select>
@@ -79,4 +79,38 @@ pero **no tenemos los métodos que validan la apuesta ni el que apuesta**. Con l
 
 ## Tipos de apuesta
 
-Un detalle interesante de la implementación de los tipos de apuesta 
+Un detalle interesante de la implementación de los tipos de apuesta es que
+
+- definimos un Tipo de Apuesta como interfaz
+- pero no la exportamos, solo la utilizamos dentro de Apuesta
+- por otra parte sí exportamos PLENO y DOCENA que son objetos que implementan dicha interfaz (strategies stateless)
+- pero en la definición **no necesitamos decir que implementan Tipo de Apuesta**. Por el mecanismo de **duck typing** es posible asignar tanto PLENO como DOCENA al tipo de apuesta
+- el tipo de apuesta define la lista de valores que el usuario puede apostar
+
+```ts
+class Pleno {...}
+
+class Docena {...}
+
+export type TipoApuesta = {
+	esGanador(numeroGanador: number, valorApostado: number | string): boolean
+	validar(apuesta: Apuesta): void
+	get ganancia(): number
+	get valoresAApostar(): (number | string)[]
+}
+
+export const PLENO = new Pleno()
+export const DOCENA = new Docena()
+```
+
+## Validación de la apuesta
+
+TODO
+
+## Resultado de la apuesta
+
+TODO
+
+## Testing
+
+TODO
