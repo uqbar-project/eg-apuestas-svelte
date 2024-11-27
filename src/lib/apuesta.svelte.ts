@@ -56,12 +56,12 @@ export class ValidationMessage {
 }
 
 export class Apuesta {
-	fecha: Date | undefined
-	monto = 0
-	tipoApuesta: TipoApuesta | undefined = PLENO
-	valorApostado!: string | number
-	resultado: Resultado | null = null
-	errors: ValidationMessage[] = []
+	fecha: Date = $state(new Date())
+	monto = $state(0)
+	tipoApuesta: TipoApuesta = $state(PLENO)
+	valorApostado: string | number = $state(1)
+	resultado: Resultado | null = $state(null)
+	errors: ValidationMessage[] = $state([])
 
 	hasErrors(field: string): boolean {
 		return this.errors.some((_) => _.field == field)

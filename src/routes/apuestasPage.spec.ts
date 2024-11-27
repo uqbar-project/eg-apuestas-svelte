@@ -2,7 +2,7 @@ import { render, screen } from '@testing-library/svelte'
 import userEvent from '@testing-library/user-event'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import ApuestaPage from './+page.svelte'
-import { Apuesta } from '$lib/apuesta'
+import { Apuesta } from '$lib/apuesta.svelte'
 
 describe('Apuestas page', () => {
 
