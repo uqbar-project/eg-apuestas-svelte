@@ -3,11 +3,10 @@
 
 	import { Apuesta, DOCENA, PLENO } from '$lib/apuesta.svelte'
 	import Validador from '$lib/Validador.svelte'
+	import { formatearFecha } from '$lib/utils'
 	import dayjs from 'dayjs'
 
-	const formatearFecha = (fecha: Date) => dayjs(fecha).format('YYYY-MM-DD')
-
-	let fechaApuesta = $state(formatearFecha(new Date()))
+	let fechaApuesta = $state(formatearFecha(null))
 	let apuesta: Apuesta = new Apuesta()
 
 	const fechaMinimaApuesta = formatearFecha(new Date())
@@ -78,8 +77,11 @@
 		<Validador elemento={apuesta} atributo="valorAApostar"></Validador>
 	</div>
 	<div class="botonera">
-		<button class="btn-primary" data-testid="btnApuesta" onclick={() => apuesta.apostar()} type="submit"
-			>Apostar</button
+		<button
+			class="btn-primary"
+			data-testid="btnApuesta"
+			onclick={() => apuesta.apostar()}
+			type="submit">Apostar</button
 		>
 	</div>
 	<div class="row">

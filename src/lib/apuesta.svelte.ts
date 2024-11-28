@@ -39,7 +39,7 @@ class Docena {
 }
 
 export type TipoApuesta = {
-	esGanador(numeroGanador: number, valorApostado: number | string): boolean
+	esGanador(numeroGanador: number, valorApostado: number | string | null): boolean
 	validar(apuesta: Apuesta): void
 	get ganancia(): number
 	get valoresAApostar(): (number | string)[]
@@ -52,14 +52,14 @@ export class ValidationMessage {
 	constructor(
 		public field: string,
 		public message: string
-	) {}
+	) { }
 }
 
 export class Apuesta {
-	fecha: Date = $state(new Date())
+	fecha: Date | null = $state(null)
 	monto = $state(0)
-	tipoApuesta: TipoApuesta = $state(PLENO)
-	valorApostado: string | number = $state(1)
+	tipoApuesta: TipoApuesta | null = $state(null)
+	valorApostado: string | number | null = $state(null)
 	resultado: Resultado | null = $state(null)
 	errors: ValidationMessage[] = $state([])
 
@@ -82,6 +82,9 @@ export class Apuesta {
 		this.errors.length = 0 // TODO: add a helper function
 		const now = new Date()
 		now.setHours(0, 0, 0, 0)
+		if (!this.fecha) {
+			this.addError('fecha', 'Debe ingresar una fecha de apuesta')
+		}
 		if (dayjs(now).isAfter(dayjs(this.fecha))) {
 			this.addError('fecha', 'Debe ingresar una fecha actual o posterior al día de hoy')
 		}

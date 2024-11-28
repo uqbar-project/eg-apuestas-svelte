@@ -12,6 +12,11 @@ describe('Apuesta', () => {
 		apuestaOk.validarApuesta()
 		expect(true).toBeTruthy()
 	})
+	it('apuesta sin fecha tira error', () => {
+		const apuestaSinFecha = new Apuesta()
+		apuestaSinFecha.validarApuesta()
+		expect(apuestaSinFecha.errorsFrom('fecha')).toBe('Debe ingresar una fecha de apuesta')
+	})
 	it('apuesta con fecha anterior a la del día de hoy tira error', () => {
 		const apuestaFechaAnterior = new Apuesta()
 		apuestaFechaAnterior.fecha = dayjs().subtract(1, 'day').toDate()
@@ -24,20 +29,28 @@ describe('Apuesta', () => {
 		const apuestaMontoNegativo = new Apuesta()
 		apuestaMontoNegativo.fecha = new Date()
 		apuestaMontoNegativo.monto = -20
+		apuestaMontoNegativo.tipoApuesta = null
 		apuestaMontoNegativo.validarApuesta()
-		expect(apuestaMontoNegativo.errorsFrom('monto')).toBe('El monto a apostar debe ser positivo. Debe apostar más de 10 $')
+		expect(apuestaMontoNegativo.errorsFrom('monto')).toBe('El monto a apostar debe ser positivo')
 		apuestaMontoNegativo.tipoApuesta = PLENO
 		apuestaMontoNegativo.validarApuesta()
 		expect(apuestaMontoNegativo.errorsFrom('monto')).toBe(
 			'El monto a apostar debe ser positivo. Debe apostar más de 10 $'
 		)
 	})
+	it('apuesta sin tipo de apuesta tira error', () => {
+		const apuestaSinTipoApuesta = new Apuesta()
+		apuestaSinTipoApuesta.fecha = new Date()
+		apuestaSinTipoApuesta.monto = 40
+		apuestaSinTipoApuesta.tipoApuesta = null
+		apuestaSinTipoApuesta.validarApuesta()
+		expect(apuestaSinTipoApuesta.errorsFrom('tipoApuesta')).toBe('Debe ingresar tipo de apuesta')
+	})
 	it('apuesta sin valor apostado tira error', () => {
 		const apuestaSinValorApostado = new Apuesta()
 		apuestaSinValorApostado.fecha = new Date()
 		apuestaSinValorApostado.monto = 5
 		apuestaSinValorApostado.tipoApuesta = PLENO
-		apuestaSinValorApostado.valorApostado = ''
 		apuestaSinValorApostado.validarApuesta()
 		expect(apuestaSinValorApostado.hasErrors('valorAApostar')).toBeTruthy()
 		expect(apuestaSinValorApostado.errorsFrom('valorAApostar')).toBe(
