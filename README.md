@@ -105,12 +105,118 @@ export const DOCENA = new Docena()
 
 ## Validación de la apuesta
 
-TODO
+El objeto apuesta es responsable de resolver la validación:
+
+- la fecha debe ser la del día de hoy o posterior y no puede ser nula
+- el monto debe ser positivo
+- debe ingresar un tipo de apuesta
+- y un valor apostado
+
+Además, cada strategy (pleno o docena) define validaciones adicionales, como el monto mínimo que debe apostarse.
+
+Podríamos modelar cada error como una excepción, pero eso cortaría el flujo de envío de mensajes y solo nos saltaría el primer error. En lugar de eso vamos a recolectar todos los errores en una colección de mensajes de validación:
+
+```ts
+validarApuesta() {
+  this.errors.length = 0 // TODO: add a helper function
+  const now = new Date()
+  now.setHours(0, 0, 0, 0)
+  if (!this.fecha) {
+    this.addError('fecha', 'Debe ingresar una fecha de apuesta')
+  }
+  if (dayjs(now).isAfter(dayjs(this.fecha))) {
+    this.addError('fecha', 'Debe ingresar una fecha actual o posterior al día de hoy')
+  }
+  if (this.monto <= 0) {
+    this.addError('monto', 'El monto a apostar debe ser positivo')
+  }
+  ...
+}
+
+addError(field: string, message: string) {
+  this.errors.push(new ValidationMessage(field, message))
+}
+
+```
+
+Así podemos pasar desde el componente principal la apuesta y un atributo...
+
+```svelte
+<Validador elemento={apuesta} atributo="monto"></Validador>
+```
+
+...a un componente hijo que sabe mostrar errores de validación:
+
+```svelte
+<script lang="ts">
+	let { elemento, atributo } = $props()
+</script>
+
+{#if elemento.hasErrors(atributo)}
+	<div class="validation-row">
+		<div ... class="validation">
+			{elemento.errorsFrom(atributo)}
+		</div>
+	</div>
+{/if}
+```
+
+- el `#if` permite un renderizado condicional del div para mostrar o no un error
+- `elemento` es un objeto `Apuesta` que puede mostrar todos los errores asociados a un atributo:
+
+```ts
+	errorsFrom(field: string) {
+		return this.errors
+			.filter((_) => _.field == field)
+			.map((_) => _.message)
+			.join('. ')
+	}
+```
 
 ## Resultado de la apuesta
 
-TODO
+En caso de ser válida la apuesta, al apostar construimos un Resultado que puede indicar si ganamos o no. El mensaje se muestra dentro de un div con un renderizado condicional, al igual que en el caso del Validador.
 
 ## Testing
 
-TODO
+Pese a no ser un objeto Typescript puro, la apuesta tiene **tests unitarios** hechos con vitest. Esto es bueno, podemos trabajar convencionalmente: inicializamos una apuesta con valores correspondientes, apostamos y sensamos las respuestas para validaciones y casos de éxito.
+
+Para testear la página la mecánica es similar, por ejemplo para testear validaciones:
+
+```svelte
+	it('debe fallar si se ingresa un importe negativo', async () => {
+		const user = userEvent.setup()
+		render(ApuestaPage)
+		await user.type(screen.getByTestId('monto'), '-10')
+		await user.click(screen.getByTestId('btnApuesta'))
+		expect(screen.getByTestId('errorMessage-monto').innerHTML).toBe('El monto a apostar debe ser positivo')
+	})
+```
+
+no obstante este test tiene un alcance mayor: probamos el binding de los controles HTML con su correspondiente modelo de vista, el funcionamiento propio de la apuesta y finalmente el mensaje de error que tiene que visualizarse dentro de la página abajo del campo que ingresa el monto.
+
+### Control sobre la apuesta exitosa
+
+Para chequear que una apuesta fue exitosa, trabajamos con un espía (_spy_) para asegurarnos de devolver el número que nosotros decidimos apostar:
+
+```svelte
+	it('debe indicar si gana el monto para la apuesta a pleno', async () => {
+		vi.spyOn(Apuesta.prototype, 'obtenerNumeroGanador').mockImplementation(() => 5)
+		const user = userEvent.setup()
+		render(ApuestaPage)
+		await user.type(screen.getByTestId('monto'), '25')
+		await user.type(screen.getByTestId('fechaApuesta'), formatearFecha(new Date()))
+		await user.selectOptions(screen.getByTestId('tipoApuesta'), 'Pleno')
+		await user.selectOptions(screen.getByTestId('apuesta'), '5')
+		await user.click(screen.getByTestId('btnApuesta'))
+		expect(screen.getByTestId('resultado').innerHTML).toBe('¡¡ Ganaste $ 875 !!')
+	})
+```
+
+como detalle adicional, es una buena práctica tener un método de _tear down_ donde reseteemos los mocks para que no nos quede la implementación de resguardo que devuelve 5:
+
+```svelte
+	afterEach(() => {
+		vi.resetAllMocks()
+	})
+```
