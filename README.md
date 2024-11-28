@@ -61,7 +61,7 @@ En el caso de la fecha, dado que el input se asocia a un string, tenemos que uti
 Podríamos haber intentado tener un objeto Apuesta **puro de Typescript** (que no tenga las runas `$state`), como $state de nuestra página, algo como
 
 ```svelte
-	let apuesta: Apuesta = $state(new Apuesta())
+  let apuesta: Apuesta = $state(new Apuesta())
 ```
 
 Lamentablemente eso no permite que sea reactivo el binding de los inputs, aun cuando los definamos como `bind:value={apuesta.monto}`. Esto es un cambio de comportamiento de la versión 4 a la 5 de Svelte donde solo soporta objetos planos, sin métodos, como está documentado [en este issue](https://github.com/sveltejs/svelte/issues/10560). Esto significa que esta variante sí funciona:
@@ -93,10 +93,10 @@ class Pleno {...}
 class Docena {...}
 
 export type TipoApuesta = {
-	esGanador(numeroGanador: number, valorApostado: number | string): boolean
-	validar(apuesta: Apuesta): void
-	get ganancia(): number
-	get valoresAApostar(): (number | string)[]
+  esGanador(numeroGanador: number, valorApostado: number | string): boolean
+  validar(apuesta: Apuesta): void
+  get ganancia(): number
+  get valoresAApostar(): (number | string)[]
 }
 
 export const PLENO = new Pleno()
@@ -149,15 +149,15 @@ Así podemos pasar desde el componente principal la apuesta y un atributo...
 
 ```svelte
 <script lang="ts">
-	let { elemento, atributo } = $props()
+  let { elemento, atributo } = $props()
 </script>
 
 {#if elemento.hasErrors(atributo)}
-	<div class="validation-row">
-		<div ... class="validation">
-			{elemento.errorsFrom(atributo)}
-		</div>
-	</div>
+  <div class="validation-row">
+    <div ... class="validation">
+      {elemento.errorsFrom(atributo)}
+    </div>
+  </div>
 {/if}
 ```
 
@@ -165,12 +165,12 @@ Así podemos pasar desde el componente principal la apuesta y un atributo...
 - `elemento` es un objeto `Apuesta` que puede mostrar todos los errores asociados a un atributo:
 
 ```ts
-	errorsFrom(field: string) {
-		return this.errors
-			.filter((_) => _.field == field)
-			.map((_) => _.message)
-			.join('. ')
-	}
+  errorsFrom(field: string) {
+    return this.errors
+      .filter((_) => _.field == field)
+      .map((_) => _.message)
+      .join('. ')
+  }
 ```
 
 ## Resultado de la apuesta
@@ -184,13 +184,13 @@ Pese a no ser un objeto Typescript puro, la apuesta tiene **tests unitarios** he
 Para testear la página la mecánica es similar, por ejemplo para testear validaciones:
 
 ```svelte
-	it('debe fallar si se ingresa un importe negativo', async () => {
-		const user = userEvent.setup()
-		render(ApuestaPage)
-		await user.type(screen.getByTestId('monto'), '-10')
-		await user.click(screen.getByTestId('btnApuesta'))
-		expect(screen.getByTestId('errorMessage-monto').innerHTML).toBe('El monto a apostar debe ser positivo')
-	})
+  it('debe fallar si se ingresa un importe negativo', async () => {
+    const user = userEvent.setup()
+    render(ApuestaPage)
+    await user.type(screen.getByTestId('monto'), '-10')
+    await user.click(screen.getByTestId('btnApuesta'))
+    expect(screen.getByTestId('errorMessage-monto').innerHTML).toBe('El monto a apostar debe ser positivo')
+  })
 ```
 
 no obstante este test tiene un alcance mayor: probamos el binding de los controles HTML con su correspondiente modelo de vista, el funcionamiento propio de la apuesta y finalmente el mensaje de error que tiene que visualizarse dentro de la página abajo del campo que ingresa el monto.
@@ -200,23 +200,23 @@ no obstante este test tiene un alcance mayor: probamos el binding de los control
 Para chequear que una apuesta fue exitosa, trabajamos con un espía (_spy_) para asegurarnos de devolver el número que nosotros decidimos apostar:
 
 ```svelte
-	it('debe indicar si gana el monto para la apuesta a pleno', async () => {
-		vi.spyOn(Apuesta.prototype, 'obtenerNumeroGanador').mockImplementation(() => 5)
-		const user = userEvent.setup()
-		render(ApuestaPage)
-		await user.type(screen.getByTestId('monto'), '25')
-		await user.type(screen.getByTestId('fechaApuesta'), formatearFecha(new Date()))
-		await user.selectOptions(screen.getByTestId('tipoApuesta'), 'Pleno')
-		await user.selectOptions(screen.getByTestId('apuesta'), '5')
-		await user.click(screen.getByTestId('btnApuesta'))
-		expect(screen.getByTestId('resultado').innerHTML).toBe('¡¡ Ganaste $ 875 !!')
-	})
+  it('debe indicar si gana el monto para la apuesta a pleno', async () => {
+    vi.spyOn(Apuesta.prototype, 'obtenerNumeroGanador').mockImplementation(() => 5)
+    const user = userEvent.setup()
+    render(ApuestaPage)
+    await user.type(screen.getByTestId('monto'), '25')
+    await user.type(screen.getByTestId('fechaApuesta'), formatearFecha(new Date()))
+    await user.selectOptions(screen.getByTestId('tipoApuesta'), 'Pleno')
+    await user.selectOptions(screen.getByTestId('apuesta'), '5')
+    await user.click(screen.getByTestId('btnApuesta'))
+    expect(screen.getByTestId('resultado').innerHTML).toBe('¡¡ Ganaste $ 875 !!')
+  })
 ```
 
 como detalle adicional, es una buena práctica tener un método de _tear down_ donde reseteemos los mocks para que no nos quede la implementación de resguardo que devuelve 5:
 
 ```svelte
-	afterEach(() => {
-		vi.resetAllMocks()
-	})
+  afterEach(() => {
+    vi.resetAllMocks()
+  })
 ```
