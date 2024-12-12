@@ -1,6 +1,7 @@
 {
 	"name": "eg-apuestas-svelte",
 	"version": "0.0.1",
+	"license": "LGPL-3.0-or-later",
 	"type": "module",
 	"scripts": {
 		"dev": "vite dev",
@@ -9,13 +10,18 @@
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
 		"format": "prettier --write .",
-		"lint": "prettier --check . && eslint .",
-		"lint:fix": "eslint . && prettier --write .",
+		"lint": "eslint src",
+		"lint:fix": "eslint src --fix",
 		"test:unit": "vitest",
 		"test": "npm run test:unit -- --run",
 		"test:ci": "npm run test:unit -- --run --coverage"
 	},
 	"devDependencies": {
+		"@testing-library/jest-dom": "^6.6.3",
+		"@testing-library/svelte": "^5.2.6",
+		"@testing-library/user-event": "^14.5.2",
+		"@types/eslint": "^9.6.1",
+		"@vitest/coverage-v8": "^2.1.5",
 		"@sveltejs/adapter-auto": "^3.0.0",
 		"@sveltejs/kit": "^2.0.0",
 		"@sveltejs/vite-plugin-svelte": "^4.0.0",
@@ -23,8 +29,6 @@
 		"eslint-config-prettier": "^9.1.0",
 		"eslint-plugin-svelte": "^2.36.0",
 		"globals": "^15.0.0",
-		"prettier": "^3.3.2",
-		"prettier-plugin-svelte": "^3.2.6",
 		"svelte": "^5.0.0",
 		"svelte-check": "^4.0.0",
 		"typescript": "^5.0.0",
@@ -33,11 +37,6 @@
 		"vitest": "^2.0.4"
 	},
 	"dependencies": {
-		"@testing-library/jest-dom": "^6.6.3",
-		"@testing-library/svelte": "^5.2.6",
-		"@testing-library/user-event": "^14.5.2",
-		"@types/eslint": "^9.6.1",
-		"@vitest/coverage-v8": "^2.1.5",
 		"dayjs": "^1.11.13",
 		"jsdom": "^25.0.1"
 	}

@@ -19,7 +19,7 @@
 		<input
 			type="date"
 			onchange={() => {
-				apuesta.fecha = dayjs(fechaApuesta).toDate()
+			  apuesta.fecha = dayjs(fechaApuesta).toDate()
 			}}
 			data-testid="fechaApuesta"
 			bind:value={fechaApuesta}
@@ -51,7 +51,7 @@
 			bind:value={apuesta.tipoApuesta}
 			required={true}
 			onchange={() => {
-				apuesta.valorApostado = ''
+			  apuesta.valorApostado = ''
 			}}
 		>
 			{#each tiposApuesta as tipo}

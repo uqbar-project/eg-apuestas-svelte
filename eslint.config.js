@@ -1,33 +1,55 @@
-import prettier from 'eslint-config-prettier'
+// eslint.config.cjs
+
+// import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended'
+import eslintPluginSvelte from 'eslint-plugin-svelte'
 import js from '@eslint/js'
-import svelte from 'eslint-plugin-svelte'
+import svelteParser from 'svelte-eslint-parser'
+import tsEslint from 'typescript-eslint'
+import tsParser from '@typescript-eslint/parser'
 import globals from 'globals'
-import ts from 'typescript-eslint'
 
-export default ts.config(
-	js.configs.recommended,
-	...ts.configs.recommended,
-	...svelte.configs['flat/recommended'],
-	prettier,
-	...svelte.configs['flat/prettier'],
-	{
-		languageOptions: {
-			globals: {
-				...globals.browser,
-				...globals.node
-			}
-		}
-	},
-	{
-		files: ['**/*.svelte'],
-
-		languageOptions: {
-			parserOptions: {
-				parser: ts.parser
-			}
-		}
-	},
-	{
-		ignores: ['build/', '.svelte-kit/', 'dist/']
-	}
-)
+export default [
+  js.configs.recommended,
+  ...tsEslint.configs.strict,
+  ...eslintPluginSvelte.configs['flat/recommended'],
+  {
+    languageOptions: {
+      globals: {
+        ...globals.browser,
+      },
+    },
+    rules: {
+      quotes: [
+        'warn',
+        'single',
+        { avoidEscape: true, allowTemplateLiterals: true },
+      ],
+      semi: ['error', 'never'],
+      indent: ['warn', 2],
+      'no-extra-parens': 'warn',
+      'no-nested-ternary': 'error',
+      'linebreak-style': ['error', 'unix'],
+      'no-cond-assign': ['error', 'always'],
+      'no-console': 'error',
+      '@typescript-eslint/sort-type-constituents': 'error',
+    },
+  },
+  {
+    files: ['**/*.svelte'],
+    languageOptions: {
+      parser: svelteParser,
+      parserOptions: {
+        parser: tsParser,
+      },
+    },
+    rules: {
+      'svelte/no-target-blank': 'error',
+      'svelte/no-at-debug-tags': 'error',
+      'svelte/no-reactive-functions': 'error',
+      'svelte/no-reactive-literals': 'error',
+      '@/semi': ['error', 'never'],
+      '@/quotes': ['warn', 'single'],
+      '@/indent': ['warn', 2],
+    }
+  }
+]
