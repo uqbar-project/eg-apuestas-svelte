@@ -9,7 +9,8 @@
 	"eslint.validate": [
 		"javascript",
 		"javascriptreact",
-		"typescript"
+		"typescript",
+		"svelte",
 	],
 	"[svelte]": {
 		"editor.defaultFormatter": "svelte.svelte-vscode"
