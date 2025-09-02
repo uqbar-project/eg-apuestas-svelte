@@ -13,7 +13,15 @@
 		"lib": [
 			"ES2015"
 		],
-		"moduleResolution": "bundler"
+		"moduleResolution": "bundler",
+		"exclude": [
+			"node_modules",
+			"build",
+			"dist",
+			".svelte-kit",
+			".vercel",
+			".output"
+		]
 	}
 	// Path aliases are handled by https://svelte.dev/docs/kit/configuration#alias
 	// except $lib which is handled by https://svelte.dev/docs/kit/configuration#files

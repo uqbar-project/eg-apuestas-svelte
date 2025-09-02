@@ -10,7 +10,7 @@ Cada input de la página tiene un binding con una propiedad de nuestro modelo qu
 
 ![binding](./images/Apuestas.binding.png)
 
-Una decisión que nos obliga a tomar Svelte es que el objeto de dominio Apuesta expone cada atributo como un $state:
+Una decisión que nos obliga a tomar Svelte es que el modelo de la vista (la clase Apuesta) expone cada atributo como un $state:
 
 ```svelte
 export class Apuesta {
