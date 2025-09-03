@@ -1,16 +1,34 @@
 <script lang="ts">
 	import './styles.css'
 
-	import { Apuesta, DOCENA, PLENO } from '$lib/apuesta.svelte'
+	import { Apuesta, DOCENA, PLENO, type ApuestaJson } from '$lib/apuesta.svelte'
 	import Validador from '$lib/Validador.svelte'
 	import { formatearFecha } from '$lib/utils'
 	import dayjs from 'dayjs'
+  import type { Resultado } from '$lib/resultado'
 
+  const fechaMinimaApuesta = formatearFecha(new Date())
+  const tiposApuesta = [PLENO, DOCENA]
+  
 	let fechaApuesta = $state(formatearFecha(null))
-	let apuesta: Apuesta = new Apuesta()
+	let apuesta: ApuestaJson = $state({
+	  fecha: null,
+	  monto: 0,
+	  tipoApuesta: PLENO,
+	  valorApostado: null,
+	})
+	let resultado: Resultado | null = $state(null)
+  
+  const apuestaPosta = () => new Apuesta(apuesta)
 
-	const fechaMinimaApuesta = formatearFecha(new Date())
-	const tiposApuesta = [PLENO, DOCENA]
+	const apostar = () => {
+	  const apuestaReal: Apuesta = apuestaPosta()
+	  apuestaReal.apostar()
+	  apuesta = {
+	    ...apuestaReal
+	  }
+	  resultado = apuestaReal.resultado
+	}
 </script>
 
 <form class="form">
@@ -27,7 +45,7 @@
 			placeholder="Fecha de apuesta"
 			min={fechaMinimaApuesta}
 		/>
-		<Validador elemento={apuesta} atributo="fecha"></Validador>
+		<Validador elemento={apuestaPosta()} atributo="fecha"></Validador>
 	</div>
 	<div class="row">
 		<label for="monto">Monto</label>
@@ -40,7 +58,7 @@
 			placeholder="Monto en $"
 			required={true}
 		/>
-		<Validador elemento={apuesta} atributo="monto"></Validador>
+		<Validador elemento={apuestaPosta()} atributo="monto"></Validador>
 	</div>
 	<div class="row">
 		<label for="tipoApuesta">Tipo de Apuesta</label>
@@ -58,7 +76,7 @@
 				<option value={tipo}>{tipo.descripcion}</option>
 			{/each}
 		</select>
-		<Validador elemento={apuesta} atributo="tipoApuesta"></Validador>
+		<Validador elemento={apuestaPosta()} atributo="tipoApuesta"></Validador>
 	</div>
 	<div class="row">
 		<label for="apuesta">Qué apostás</label>
@@ -74,20 +92,20 @@
 				<option value={valor}>{valor}</option>
 			{/each}
 		</select>
-		<Validador elemento={apuesta} atributo="valorAApostar"></Validador>
+		<Validador elemento={apuestaPosta()} atributo="valorAApostar"></Validador>
 	</div>
 	<div class="botonera">
 		<button
 			class="btn-primary"
 			data-testid="btnApuesta"
-			onclick={() => apuesta.apostar()}
+			onclick={() => apostar()}
 			type="submit">Apostar</button
 		>
 	</div>
 	<div class="row">
-		{#if apuesta.resultado}
+		{#if resultado}
 			<div class="message" data-testid="resultado">
-				{apuesta.resultado.valor()}
+				{resultado.valor()}
 			</div>
 		{/if}
 	</div>

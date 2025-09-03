@@ -55,13 +55,24 @@ export class ValidationMessage {
   ) { }
 }
 
+export type ApuestaJson = {
+  fecha: Date | null,
+  monto: number,
+  tipoApuesta: TipoApuesta | null,
+  valorApostado: number | string | null,
+}
+
 export class Apuesta {
-  fecha: Date | null = $state(null)
-  monto = $state(0)
-  tipoApuesta: TipoApuesta | null = $state(null)
-  valorApostado: number | string | null = $state(null)
-  resultado: Resultado | null = $state(null)
-  errors: ValidationMessage[] = $state([])
+  fecha: Date | null = null
+  monto = 0
+  tipoApuesta: TipoApuesta | null = null
+  valorApostado: number | string | null = null
+  resultado: Resultado | null = null
+  errors: ValidationMessage[] = []
+
+  constructor(apuestaJson?: ApuestaJson) {
+    Object.assign(this, apuestaJson)
+  }
 
   hasErrors(field: string): boolean {
     return this.errors.some((_) => _.field == field)

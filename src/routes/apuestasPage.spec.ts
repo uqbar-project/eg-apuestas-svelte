@@ -16,7 +16,7 @@ describe('Apuestas page', () => {
     render(ApuestaPage)
     await user.type(screen.getByTestId('monto'), '-10')
     await user.click(screen.getByTestId('btnApuesta'))
-    expect(screen.getByTestId('errorMessage-monto').innerHTML).toBe('El monto a apostar debe ser positivo')
+    expect(screen.getByTestId('errorMessage-monto').innerHTML).toBe('El monto a apostar debe ser positivo. Debe apostar más de 10 $')
   })
 
   it('debe fallar si se ingresa un importe menor para la apuesta a pleno', async () => {
