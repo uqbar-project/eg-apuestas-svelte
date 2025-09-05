@@ -56,7 +56,7 @@ export class ValidationMessage {
 }
 
 export class Apuesta {
-  fecha: Date | null = $state(null)
+  fecha: Date | null = null
   monto = $state(0)
   tipoApuesta: TipoApuesta | null = $state(null)
   valorApostado: number | string | null = $state(null)
