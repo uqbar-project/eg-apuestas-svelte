@@ -185,10 +185,9 @@ Para testear la página la mecánica es similar, por ejemplo para testear valida
 
 ```svelte
   it('debe fallar si se ingresa un importe negativo', async () => {
-    const user = userEvent.setup()
     render(ApuestaPage)
-    await user.type(screen.getByTestId('monto'), '-10')
-    await user.click(screen.getByTestId('btnApuesta'))
+    await userEvent.type(screen.getByTestId('monto'), '-10')
+    await userEvent.click(screen.getByTestId('btnApuesta'))
     expect(screen.getByTestId('errorMessage-monto').innerHTML).toBe('El monto a apostar debe ser positivo')
   })
 ```
@@ -202,13 +201,12 @@ Para chequear que una apuesta fue exitosa, trabajamos con un espía (_spy_) para
 ```svelte
   it('debe indicar si gana el monto para la apuesta a pleno', async () => {
     vi.spyOn(Apuesta.prototype, 'obtenerNumeroGanador').mockImplementation(() => 5)
-    const user = userEvent.setup()
     render(ApuestaPage)
-    await user.type(screen.getByTestId('monto'), '25')
-    await user.type(screen.getByTestId('fechaApuesta'), formatearFecha(new Date()))
-    await user.selectOptions(screen.getByTestId('tipoApuesta'), 'Pleno')
-    await user.selectOptions(screen.getByTestId('apuesta'), '5')
-    await user.click(screen.getByTestId('btnApuesta'))
+    await userEvent.type(screen.getByTestId('monto'), '25')
+    await userEvent.type(screen.getByTestId('fechaApuesta'), formatearFecha(new Date()))
+    await userEvent.selectOptions(screen.getByTestId('tipoApuesta'), 'Pleno')
+    await userEvent.selectOptions(screen.getByTestId('apuesta'), '5')
+    await userEvent.click(screen.getByTestId('btnApuesta'))
     expect(screen.getByTestId('resultado').innerHTML).toBe('¡¡ Ganaste $ 875 !!')
   })
 ```
